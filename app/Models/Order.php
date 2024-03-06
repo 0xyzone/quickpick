@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -22,14 +23,12 @@ class Order extends Model
     }
 
     /**
-     * The items that belong to the Order
+     * Get all of the orderItems for the Order
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function orderItems(): BelongsToMany
+    public function orderItems(): HasMany
     {
-        return $this->belongsToMany(OrderItem::class, 'order_items')
-        ->withPivot('quantity')
-        ->withTimestamps();
+        return $this->hasMany(OrderItem::class);
     }
 }

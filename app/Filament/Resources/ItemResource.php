@@ -11,7 +11,9 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Select;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ItemResource\Pages;
@@ -45,13 +47,22 @@ class ItemResource extends Resource
     {
         return $table
             ->columns([
-                //
+                ImageColumn::make('item_photo_path')
+                ->label('Img')
+                ->grow(0),
+                TextColumn::make('name')
+                ->label('Item Name')
+                ->searchable()
+                ->sortable(),
+                TextColumn::make('price')
+                ->sortable(),
+                ImageColumn::make('category.category_photo_path')
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
+                // Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
