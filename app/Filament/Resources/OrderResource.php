@@ -43,7 +43,7 @@ class OrderResource extends Resource
         return $form
             ->schema([
                 Hidden::make('user_id')
-                ->default(auth()->id()),
+                    ->default(auth()->id()),
                 Select::make('order_type')
                     ->options([
                         'on_site' => 'Pasal',
@@ -176,7 +176,14 @@ class OrderResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-        ->defaultSort('id', 'desc')
+            ->defaultSort('id', 'desc')
+            ->recordClasses(fn (Model $record) => match ($record->status) {
+                'pending' => 'bg-gray-500',
+                'preparing' => 'bg-blue-500',
+                'ready' => 'bg-lime-600',
+                'out_delivery' => 'bg-cyan-500',
+                default => null
+            })
             ->deferLoading()
             ->columns([
                 TextColumn::make('id')
@@ -197,7 +204,7 @@ class OrderResource extends Resource
                         'off_site' => 'warning'
                     }),
                 TextColumn::make('total')
-                ->prefix('Rs. '),
+                    ->prefix('Rs. '),
                 SelectColumn::make('status')
                     ->options([
                         'pending' => 'Pending',

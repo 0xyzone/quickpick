@@ -35,6 +35,7 @@ class CategoryResource extends Resource
                 FileUpload::make('category_photo_path')
                     ->image()
                     ->directory('categories.img')
+                    ->moveFiles()
             ])->columns(1);
     }
 

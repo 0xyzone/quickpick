@@ -40,7 +40,10 @@ class ItemResource extends Resource
                 TextInput::make('price'),
                 FileUpload::make('item_photo_path')
                 ->label('Item Image')
-                ->columnSpanFull(),
+                ->image()
+                ->columnSpanFull()
+                ->directory('items.img')
+                ->moveFiles(),
             ]);
     }
 
