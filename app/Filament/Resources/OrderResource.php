@@ -12,8 +12,11 @@ use Filament\Forms\Set;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Actions\CreateAction;
+use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Textarea;
@@ -39,6 +42,8 @@ class OrderResource extends Resource
     {
         return $form
             ->schema([
+                Hidden::make('user_id')
+                ->default(auth()->id()),
                 Select::make('order_type')
                     ->options([
                         'on_site' => 'Pasal',
@@ -143,7 +148,8 @@ class OrderResource extends Resource
                             ->readOnly()
                             ->prefix('Rs.'),
                     ])->columns(3),
-            ])->columns(2);
+            ])
+            ->columns(2);
     }
 
     public static function updateTotals(Get $get, Set $set): void
@@ -170,6 +176,7 @@ class OrderResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+        ->defaultSort('id', 'desc')
             ->deferLoading()
             ->columns([
                 TextColumn::make('id')
@@ -189,7 +196,8 @@ class OrderResource extends Resource
                         'on_site' => 'primary',
                         'off_site' => 'warning'
                     }),
-                TextColumn::make('total'),
+                TextColumn::make('total')
+                ->prefix('Rs. '),
                 SelectColumn::make('status')
                     ->options([
                         'pending' => 'Pending',
@@ -198,7 +206,7 @@ class OrderResource extends Resource
                         'out_delivery' => 'Out for delivery'
                     ]),
                 TextInputColumn::make('notes')
-                ->label('Remarks')
+                    ->label('Remarks')
             ])
             ->filters([
                 //
@@ -226,7 +234,7 @@ class OrderResource extends Resource
     {
         return [
             'index' => Pages\ListOrders::route('/'),
-            'create' => Pages\CreateOrder::route('/create'),
+            // 'create' => Pages\CreateOrder::route('/create'),
             // 'view' => Pages\ViewOrder::route('/{record}'),
             // 'edit' => Pages\EditOrder::route('/{record}/edit'),
         ];
