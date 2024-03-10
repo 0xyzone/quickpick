@@ -13,6 +13,7 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Actions\CreateAction;
+use Filament\Forms\Components\Split;
 use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
@@ -25,8 +26,10 @@ use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\BadgeColumn;
+use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\SelectColumn;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Components\Placeholder;
 use Filament\Tables\Columns\TextInputColumn;
 use App\Filament\Resources\OrderResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -49,9 +52,11 @@ class OrderResource extends Resource
                         'on_site' => 'Pasal',
                         'off_site' => 'Online/Call'
                     ])
-                    ->default('on_site'),
+                    ->default('on_site')
+                    ->reactive(),
                 TextInput::make('address')
-                ->required(fn(string $operation) => $operation == 'edit'),
+                    ->required(fn(Get $get) => $get('order_type') == 'off_site')
+                    ->hidden(fn(Get $get): bool => $get('order_type') == 'off_site' ? false : true ),
                 Repeater::make('orderItems')
                     ->relationship()
                     ->schema([
@@ -133,22 +138,60 @@ class OrderResource extends Resource
                     ->columnSpan(1),
                 Fieldset::make('Total')
                     ->schema([
-                        TextInput::make('sub_total')
-                            ->prefix('रु ')
-                            ->label('Sub Total')
-                            ->numeric()
-                            ->readOnly()
-                            ->dehydrated(false),
-                        TextInput::make('discount_amount')
-                            ->prefix('रु ')
-                            ->numeric()
-                            ->readOnly(),
-                        TextInput::make('total')
-                            ->label('Grand Total')
-                            ->prefix('रु ')
-                            ->numeric()
-                            ->readOnly(),
-                    ])->columns(3),
+                        Split::make([
+                            Placeholder::make('sub_total')
+                            ->label('')
+                            ->content(function(): string {
+                                return 'Sub Total';
+                            }),
+                            Placeholder::make('sub_total')
+                                ->label('')
+                                ->content(function (Get $get): string {
+                                    return 'रु ' . $get('sub_total');
+                                }),
+                        ]),
+                        Split::make([
+                            Placeholder::make('discount_amount')
+                            ->label('')
+                            ->content(function(): string {
+                                return 'Discount Amount';
+                            }),
+                            Placeholder::make('discount_amount')
+                                ->label('')
+                                ->content(function (Get $get): string {
+                                    return 'रु ' . $get('discount_amount');
+                                }),
+                        ]),
+                        Split::make([
+                            Placeholder::make('total')
+                            ->label('')
+                            ->content(function(): string {
+                                return 'Grand Total';
+                            }),
+                            Placeholder::make('total')
+                                ->label('')
+                                ->content(function (Get $get): string {
+                                    return 'रु ' . $get('total');
+                                }),
+                        ]),
+                        Hidden::make('discount_amount'),
+                        Hidden::make('total'),
+                        // TextInput::make('sub_total')
+                        //     ->prefix('रु ')
+                        //     ->label('Sub Total')
+                        //     ->numeric()
+                        //     ->readOnly()
+                        //     ->dehydrated(false),
+                        // TextInput::make('discount_amount')
+                        //     ->prefix('रु ')
+                        //     ->numeric()
+                        //     ->readOnly(),
+                        // TextInput::make('total')
+                        //     ->label('Grand Total')
+                        //     ->prefix('रु ')
+                        //     ->numeric()
+                        //     ->readOnly(),
+                    ])->columns(1),
             ])
             ->columns(2);
     }
@@ -182,8 +225,9 @@ class OrderResource extends Resource
             ->recordClasses(fn(Model $record) => match ($record->status) {
                 'pending' => null,
                 'preparing' => '!bg-yellow-600 hover:!bg-yellow-800',
-                'ready' => '!bg-lime-700 hover:!bg-lime-800',
+                'ready' => '!bg-indigo-700 hover:!bg-indigo-800',
                 'out_delivery' => '!bg-cyan-500 hover:!bg-cyan-600',
+                'delivered' => '!bg-emerald-500 hover:!bg-emerald-600',
                 default => null
             })
             ->striped()
@@ -215,7 +259,8 @@ class OrderResource extends Resource
                         'pending' => 'Pending',
                         'preparing' => 'Being Prepared',
                         'ready' => 'Ready',
-                        'out_delivery' => 'Out for delivery'
+                        'out_delivery' => 'Out for delivery',
+                        'delivered' => 'Delivered',
                     ]),
                 TextInputColumn::make('notes')
                     ->label('Remarks')
