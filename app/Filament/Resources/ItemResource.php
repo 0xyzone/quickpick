@@ -11,10 +11,13 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\Layout\Grid;
 use Filament\Forms\Components\FileUpload;
+use Filament\Tables\Columns\Layout\Split;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ItemResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -33,17 +36,24 @@ class ItemResource extends Resource
         return $form
             ->schema([
                 Select::make('category_id')
-                ->label('Category')
-                ->options(Category::all()->pluck('name', 'id'))
-                ->columnSpanFull(),
-                TextInput::make('name'),
-                TextInput::make('price'),
+                    ->label('Category')
+                    ->options(Category::all()->pluck('name', 'id'))
+                    ->columnSpanFull()
+                    ->required(),
+                TextInput::make('name')
+                    ->unique(ignoreRecord: true)
+                    ->required(),
+                TextInput::make('price')
+                    ->required(),
+                Textarea::make('description')
+                    ->columnSpanFull(),
                 FileUpload::make('item_photo_path')
-                ->label('Item Image')
-                ->image()
-                ->columnSpanFull()
-                ->directory('items.img')
-                ->moveFiles(),
+                    ->label('Item Image')
+                    ->required(fn(string $operation) => $operation == 'edit')
+                    ->image()
+                    ->columnSpanFull()
+                    ->directory('items.img')
+                    ->moveFiles(),
             ]);
     }
 
@@ -51,17 +61,51 @@ class ItemResource extends Resource
     {
         return $table
             ->columns([
-                ImageColumn::make('item_photo_path')
-                ->label('Img')
-                ->grow(0),
-                TextColumn::make('name')
-                ->label('Item Name')
-                ->searchable()
-                ->sortable(),
-                TextColumn::make('price')
-                ->sortable(),
-                ImageColumn::make('category.category_photo_path')
+                Grid::make()
+                    ->columns(1)
+                    ->schema([
+                        ImageColumn::make('item_photo_path')
+                            ->defaultImageUrl(url('/storage/default.jpg'))
+                            ->label('Img')
+                            ->size('100%')
+                            ->extraImgAttributes([
+                                'class' => '!object-center rounded-lg mb-2 aspect-square'
+                            ]),
+                        Split::make([
+                            ImageColumn::make('category.category_photo_path')
+                                ->grow(0)
+                                ->width(15)
+                                ->height(15),
+                                TextColumn::make('category.name')
+                        ]),
+                            TextColumn::make('name')
+                                ->label('Item Name')
+                                ->color('primary')
+                                ->searchable()
+                                ->sortable(),
+                        TextColumn::make('description')
+                        ->wrap()
+                            ->limit(120)
+                            ->color('gray')
+                            ->tooltip(function (TextColumn $column): ?string {
+                                $state = $column->getState();
+
+                                if (strlen($state) <= $column->getCharacterLimit()) {
+                                    return null;
+                                }
+
+                                // Only render the tooltip if the column content exceeds the length limit.
+                                return $state;
+                            }),
+                        TextColumn::make('price')
+                            ->prefix('रु ')
+                            ->sortable(),
+                    ]),
             ])
+            ->contentGrid(['md' => 2, 'xl' => 4])
+            ->paginationPageOptions([2, 4, 8, 12, 'all'])
+            ->defaultPaginationPageOption(4)
+            ->defaultSort('id', 'desc')
             ->filters([
                 //
             ])
@@ -70,9 +114,9 @@ class ItemResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                // Tables\Actions\BulkActionGroup::make([
+                //     Tables\Actions\DeleteBulkAction::make(),
+                // ]),
             ]);
     }
 

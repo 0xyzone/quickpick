@@ -27,7 +27,7 @@ class ItemObserver
 
     public function saved(Item $item): void
     {
-        if ($item->isDirty('item_photo_path')) {
+        if ($item->isDirty('item_photo_path') && !is_null($item->item_photo_path)) {
             Storage::disk('public')->delete($item->getOriginal('item_photo_path'));
         }
     }

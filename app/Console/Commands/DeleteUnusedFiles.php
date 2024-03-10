@@ -33,6 +33,7 @@ class DeleteUnusedFiles extends Command
 
         collect(Storage::disk('public')->allFiles())
         ->reject(fn (string $file) => $file === '.gitignore')
+        ->reject(fn (string $file) => $file === 'default.jpg')
         ->reject(fn (string $file) => in_array($file, $categories))
         ->reject(fn (string $file) => in_array($file, $items))
         ->each(fn ($file) => Storage::disk('public')->delete($file));

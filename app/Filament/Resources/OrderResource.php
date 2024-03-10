@@ -87,7 +87,7 @@ class OrderResource extends Resource
                         TextInput::make('price')
                             ->dehydrated(false)
                             ->disabled()
-                            ->prefix('Rs.')
+                            ->prefix('रु ')
                             ->numeric()
                             ->columnSpan(2),
                         Hidden::make('price')
@@ -107,7 +107,6 @@ class OrderResource extends Resource
                                 'percent' => 'Percent (%)',
                                 'amount' => 'Amount'
                             ])
-                            ->default('percent')
                             ->dehydrated(false)
                             ->reactive(),
                         Select::make('percent')
@@ -124,6 +123,7 @@ class OrderResource extends Resource
                             ->numeric()
                             ->dehydrated(false)
                             ->hidden(fn(Get $get): bool => $get('type') == 'amount' ? false : true)
+                            ->prefix('रु ')
                     ])
                     ->live()
                     ->afterStateUpdated(function (Get $get, Set $set) {
@@ -133,20 +133,20 @@ class OrderResource extends Resource
                 Fieldset::make('Total')
                     ->schema([
                         TextInput::make('sub_total')
+                            ->prefix('रु ')
                             ->label('Sub Total')
                             ->numeric()
                             ->readOnly()
-                            ->dehydrated(false)
-                            ->prefix('Rs.'),
+                            ->dehydrated(false),
                         TextInput::make('discount_amount')
+                            ->prefix('रु ')
                             ->numeric()
-                            ->readOnly()
-                            ->prefix('Rs.'),
+                            ->readOnly(),
                         TextInput::make('total')
                             ->label('Grand Total')
+                            ->prefix('रु ')
                             ->numeric()
-                            ->readOnly()
-                            ->prefix('Rs.'),
+                            ->readOnly(),
                     ])->columns(3),
             ])
             ->columns(2);
@@ -160,6 +160,7 @@ class OrderResource extends Resource
             return $subtotal + ($prices[$product['item_id']] * $product['quantity']);
         }, 0);
         $discountType = $get('type');
+        $discount = 0;
         if ($discountType == 'percent') {
             $percent = $get('percent');
             $discount = $subtotal * ($percent / 100);
@@ -177,13 +178,14 @@ class OrderResource extends Resource
     {
         return $table
             ->defaultSort('id', 'desc')
-            ->recordClasses(fn (Model $record) => match ($record->status) {
-                'pending' => 'bg-gray-500',
-                'preparing' => 'bg-blue-500',
-                'ready' => 'bg-lime-600',
-                'out_delivery' => 'bg-cyan-500',
+            ->recordClasses(fn(Model $record) => match ($record->status) {
+                'pending' => null,
+                'preparing' => '!bg-yellow-600 hover:!bg-yellow-800',
+                'ready' => '!bg-lime-700 hover:!bg-lime-800',
+                'out_delivery' => '!bg-cyan-500 hover:!bg-cyan-600',
                 default => null
             })
+            ->striped()
             ->deferLoading()
             ->columns([
                 TextColumn::make('id')
@@ -200,12 +202,14 @@ class OrderResource extends Resource
                         'off_site' => 'heroicon-o-wifi'
                     })
                     ->color(fn(string $state): string => match ($state) {
-                        'on_site' => 'primary',
-                        'off_site' => 'warning'
+                        'on_site' => 'white',
+                        'off_site' => 'white'
                     }),
                 TextColumn::make('total')
                     ->prefix('Rs. '),
                 SelectColumn::make('status')
+                    ->rules(['required'])
+                    ->selectablePlaceholder(false)
                     ->options([
                         'pending' => 'Pending',
                         'preparing' => 'Being Prepared',
@@ -220,7 +224,8 @@ class OrderResource extends Resource
             ])
             ->actions([
                 // Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->color('white'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -11,6 +11,7 @@ use Filament\Resources\Resource;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\Layout\Grid;
 use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\CategoryResource\Pages;
@@ -43,14 +44,21 @@ class CategoryResource extends Resource
     {
         return $table
             ->columns([
-                ImageColumn::make('category_photo_path')
+                Grid::make()
+                ->columns(1)
+                ->schema([
+                    ImageColumn::make('category_photo_path')
                     ->label('Img')
                     ->grow(false),
                 TextColumn::make('name')
                     ->searchable()
                     ->sortable()
                     ->columnSpanFull(),
+                ]),
             ])
+            ->contentGrid(['md' => 2, 'xl' => 3])
+            ->paginationPageOptions([9,18,27])
+            ->defaultSort('id', 'desc')
             ->filters([
                 //
             ])

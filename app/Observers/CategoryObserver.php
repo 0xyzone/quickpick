@@ -20,14 +20,14 @@ class CategoryObserver
      */
     public function updated(Category $category): void
     {
-        if ($category->isDirty('category_photo_path')) {
+        if ($category->isDirty('category_photo_path') && !is_null($category->item_photo_path)) {
             Storage::disk('public')->delete($category->getOriginal('category_photo_path'));
         }
     }
 
     public function saved(Category $category): void
     {
-        if ($category->isDirty('category_photo_path')) {
+        if ($category->isDirty('category_photo_path') && !is_null($category->item_photo_path)) {
             Storage::disk('public')->delete($category->getOriginal('category_photo_path'));
         }
     }
