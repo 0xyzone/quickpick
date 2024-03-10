@@ -1,5 +1,7 @@
 <div class="bg-violet-900 rounded-2xl flex flex-col overflow-clip w-96 text-white hover:scale-105 duration-300 hover:shadow-2xl hover:shadow-purple-900 group">
-    <div class="bg-gray-300 rounded-bl-[4rem] overflow-clip"><img src="{{ asset('storage/momo.png') }}" alt="" class="group-hover:scale-[1.1] duration-300 w-96 p-10"></div>
+    <div class="bg-gray-300 rounded-bl-[4rem] overflow-clip">
+        <img src="{{ asset('storage/default.jpg') }}" alt="" class="group-hover:scale-[1.1] duration-300 w-96 p-10">
+    </div>
     <div class="px-8 py-4 w-full space-y-4">
         <h1 class="text-2xl font-bold">{{ $itemName }}</h1>
         <p class="line-clamp-3">{{ $itemDescription }}</p>

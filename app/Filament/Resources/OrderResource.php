@@ -50,7 +50,8 @@ class OrderResource extends Resource
                         'off_site' => 'Online/Call'
                     ])
                     ->default('on_site'),
-                TextInput::make('address'),
+                TextInput::make('address')
+                ->required(fn(string $operation) => $operation == 'edit'),
                 Repeater::make('orderItems')
                     ->relationship()
                     ->schema([
