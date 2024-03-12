@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->longText('header');
             $table->longText('description');
-            $table->string('cta')->nullable();
+            $table->string('cta_text')->nullable();
+            $table->string('cta_url')->nullable();
             $table->string('background_photo_path');
             $table->timestamps();
         });

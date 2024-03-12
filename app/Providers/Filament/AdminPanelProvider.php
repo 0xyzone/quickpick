@@ -5,6 +5,7 @@ namespace App\Providers\Filament;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationGroup;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -25,11 +26,14 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->viteTheme('resources/css/filament/admin/theme.css')
+            ->brandLogo(fn() => view('components.light-application-logo'))
+            ->darkModeBrandLogo(fn() => view('components.dark-application-logo'))
+            ->favicon(asset('storage/favicon.png'))
             ->id('admin')
             ->path('admin')
             ->sidebarCollapsibleOnDesktop()
             ->colors([
-                'primary' => Color::Purple,
+                'primary' => Color::Violet,
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')

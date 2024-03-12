@@ -48,6 +48,7 @@ class OrderResource extends Resource
                 Hidden::make('user_id')
                     ->default(auth()->id()),
                 Select::make('order_type')
+                ->selectablePlaceholder(false)
                     ->options([
                         'on_site' => 'Pasal',
                         'off_site' => 'Online/Call'
@@ -56,7 +57,7 @@ class OrderResource extends Resource
                     ->reactive(),
                 TextInput::make('address')
                     ->required(fn(Get $get) => $get('order_type') == 'off_site')
-                    ->hidden(fn(Get $get): bool => $get('order_type') == 'off_site' ? false : true ),
+                    ->hidden(fn(Get $get): bool => $get('order_type') == 'off_site' ? false : true),
                 Repeater::make('orderItems')
                     ->relationship()
                     ->schema([
@@ -66,6 +67,7 @@ class OrderResource extends Resource
                             ->options(Item::all()->pluck('name', 'id'))
                             ->required()
                             ->reactive()
+                            ->selectablePlaceholder(false)
                             ->afterStateUpdated(function ($state, callable $set, Get $get) {
                                 $product = Item::find($state);
                                 $quantity = $get('quantity');
@@ -104,7 +106,6 @@ class OrderResource extends Resource
                     ->afterStateUpdated(function (Get $get, Set $set) {
                         self::updateTotals($get, $set);
                     }),
-                Textarea::make('notes'),
                 Fieldset::make('discount')
                     ->label('Discount')
                     ->schema([
@@ -113,9 +114,9 @@ class OrderResource extends Resource
                                 'percent' => 'Percent (%)',
                                 'amount' => 'Amount'
                             ])
-                            ->dehydrated(false)
                             ->reactive(),
                         Select::make('percent')
+                        ->selectablePlaceholder(false)
                             ->options([
                                 0 => '0',
                                 5 => '5',
@@ -123,11 +124,9 @@ class OrderResource extends Resource
                                 15 => '15',
                             ])
                             ->default(0)
-                            ->dehydrated(false)
                             ->hidden(fn(Get $get): bool => $get('type') == 'percent' ? false : true),
                         TextInput::make('amount')
                             ->numeric()
-                            ->dehydrated(false)
                             ->hidden(fn(Get $get): bool => $get('type') == 'amount' ? false : true)
                             ->prefix('रु ')
                     ])
@@ -136,14 +135,34 @@ class OrderResource extends Resource
                         self::updateTotals($get, $set);
                     })
                     ->columnSpan(1),
+                Fieldset::make('delivery')
+                    ->label('Delivery Charge')
+                    ->schema([
+                        Select::make('delivery_charge')
+                        ->selectablePlaceholder(false)
+                        ->label('Amount')
+                            ->options([
+                                0 => '0',
+                                100 => '100',
+                                150 => '150',
+                            ])
+                            ->default(0),
+                    ])
+                    ->live()
+                    ->afterStateUpdated(function (Get $get, Set $set) {
+                        self::updateTotals($get, $set);
+                    })
+                    ->columnSpan(1),
+                Textarea::make('notes')
+                    ->columnSpanFull(),
                 Fieldset::make('Total')
                     ->schema([
                         Split::make([
                             Placeholder::make('sub_total')
-                            ->label('')
-                            ->content(function(): string {
-                                return 'Sub Total';
-                            }),
+                                ->label('')
+                                ->content(function (): string {
+                                    return 'Sub Total';
+                                }),
                             Placeholder::make('sub_total')
                                 ->label('')
                                 ->content(function (Get $get): string {
@@ -152,45 +171,45 @@ class OrderResource extends Resource
                         ]),
                         Split::make([
                             Placeholder::make('discount_amount')
-                            ->label('')
-                            ->content(function(): string {
-                                return 'Discount Amount';
-                            }),
+                                ->label('')
+                                ->content(function (): string {
+                                    return 'Discount Amount';
+                                }),
                             Placeholder::make('discount_amount')
                                 ->label('')
                                 ->content(function (Get $get): string {
                                     return 'रु ' . $get('discount_amount');
                                 }),
-                        ]),
+                        ])
+                        ->hidden(fn(Get $get): bool => $get('discount_amount') > 0 ? false : true),
+                        Split::make([
+                            Placeholder::make('delivery')
+                                ->label('')
+                                ->content(function (): string {
+                                    return 'Delivery Charge';
+                                }),
+                            Placeholder::make('delivery_charge')
+                                ->label('')
+                                ->content(function (Get $get): string {
+                                    return 'रु ' . $get('delivery_charge');
+                                }),
+                        ])
+                        ->hidden(fn(Get $get): bool => $get('delivery_charge') > 0 ? false : true),
                         Split::make([
                             Placeholder::make('total')
-                            ->label('')
-                            ->content(function(): string {
-                                return 'Grand Total';
-                            }),
+                                ->label('')
+                                ->content(function (): string {
+                                    return 'Grand Total';
+                                }),
                             Placeholder::make('total')
                                 ->label('')
                                 ->content(function (Get $get): string {
                                     return 'रु ' . $get('total');
                                 }),
                         ]),
+                        Hidden::make('sub_total'),
                         Hidden::make('discount_amount'),
                         Hidden::make('total'),
-                        // TextInput::make('sub_total')
-                        //     ->prefix('रु ')
-                        //     ->label('Sub Total')
-                        //     ->numeric()
-                        //     ->readOnly()
-                        //     ->dehydrated(false),
-                        // TextInput::make('discount_amount')
-                        //     ->prefix('रु ')
-                        //     ->numeric()
-                        //     ->readOnly(),
-                        // TextInput::make('total')
-                        //     ->label('Grand Total')
-                        //     ->prefix('रु ')
-                        //     ->numeric()
-                        //     ->readOnly(),
                     ])->columns(1),
             ])
             ->columns(2);
@@ -205,6 +224,7 @@ class OrderResource extends Resource
         }, 0);
         $discountType = $get('type');
         $discount = 0;
+        $deliveryCharge = 0;
         if ($discountType == 'percent') {
             $percent = $get('percent');
             $discount = $subtotal * ($percent / 100);
@@ -213,9 +233,10 @@ class OrderResource extends Resource
             $amount = $get('amount');
             $discount = $amount;
         }
+        $deliveryCharge = $get('delivery_charge');
         $set('sub_total', $subtotal);
         $set('discount_amount', $discount);
-        $set('total', $subtotal - $discount);
+        $set('total', $subtotal - $discount + $deliveryCharge);
     }
 
     public static function table(Table $table): Table
@@ -228,6 +249,7 @@ class OrderResource extends Resource
                 'ready' => '!bg-indigo-700 hover:!bg-indigo-800',
                 'out_delivery' => '!bg-cyan-500 hover:!bg-cyan-600',
                 'delivered' => '!bg-emerald-500 hover:!bg-emerald-600',
+                'cancelled' => '!bg-red-500 hover:!bg-red-600',
                 default => null
             })
             ->striped()
@@ -261,6 +283,7 @@ class OrderResource extends Resource
                         'ready' => 'Ready',
                         'out_delivery' => 'Out for delivery',
                         'delivered' => 'Delivered',
+                        'cancelled' => 'Cancelled',
                     ]),
                 TextInputColumn::make('notes')
                     ->label('Remarks')

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DemoController;
 use App\Http\Controllers\HomeController;
 
 /*
@@ -23,8 +24,9 @@ Route::view('dashboard', 'dashboard')
 Route::view('profile', 'profile')
     ->middleware(['auth', 'user'])
     ->name('profile');
+    Route::get('/demo', [DemoController::class, 'index']);
 
-Route::view('demo', 'demo')->name('demo');
+// Route::view('demo', 'demo')->name('demo');
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 

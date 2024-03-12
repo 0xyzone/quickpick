@@ -6,11 +6,12 @@ use Filament\Forms;
 use App\Models\Hero;
 use Filament\Tables;
 use Filament\Forms\Form;
-use Filament\Tables\Columns\IconColumn;
-use Filament\Tables\Columns\ViewColumn;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Textarea;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ViewColumn;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\Layout\Grid;
@@ -33,27 +34,22 @@ class HeroResource extends Resource
         return $form
             ->schema([
                 TextInput::make('header')
-                    ->required(),
-                TextInput::make('cta')
-                    ->prefix(env('APP_URL')),
-                RichEditor::make('description')
-                    ->disableToolbarButtons([
-                        'blockquote',
-                        'strike',
-                        'attachFiles',
-                        'bulletList',
-                        'codeBlock',
-                        'link',
-                        'orderedList',
-                        'h1',
-                        'h2',
-                        'h3',
-                        'strike',
-                    ])
+                    ->required()
+                    ->columnSpanFull(),
+                    TextInput::make('cta_text')
+                    ->prefixIcon('heroicon-m-pencil')
+                ->prefixIconColor('primary'),
+                TextInput::make('cta_url')
+                ->url(fn( string | null $state): bool => $state == '#' ? false : true)
+                ->prefixIcon('heroicon-m-globe-alt')
+                ->prefixIconColor('primary')
+                ->reactive(),
+                Textarea::make('description')
                     ->required()
                     ->columnSpanFull(),
                 FileUpload::make('background_photo_path')
                     ->label('Banner')
+                    ->directory('heroes.background')
                     ->required()
                     ->image()
                     ->columnSpanFull(),
@@ -67,16 +63,15 @@ class HeroResource extends Resource
                 Grid::make()
                     ->columns(1)
                     ->schema([
-                        ImageColumn::make('item_photo_path')
+                        ImageColumn::make('background_photo_path')
                             ->defaultImageUrl(url('/storage/default.jpg'))
                             ->label('Img')
                             ->size('100%')
                             ->extraImgAttributes([
-                                'class' => '!object-center rounded-lg mb-2 aspect-square'
+                                'class' => '!object-center rounded-lg mb-2 aspect-video'
                             ]),
                         TextColumn::make('header'),
-                        TextColumn::make('description')
-                            ->html(),
+                        TextColumn::make('description'),
                         // ViewColumn::make('description')->view('tables.columns.hero-description'),
                     ]),
             ])
@@ -89,7 +84,7 @@ class HeroResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                // Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 // Tables\Actions\BulkActionGroup::make([

@@ -16,9 +16,13 @@ return new class extends Migration
             $table->string('order_type');
             $table->foreignId('user_id')->nullable()->constrained();
             $table->string('address')->nullable();
+            $table->string('type')->nullable();
+            $table->integer('percent')->nullable();
+            $table->decimal('sub_total', 7, 2)->nullable();
             $table->decimal('discount_amount', 7, 2)->nullable();
-            $table->string('status')->default('pending');
+            $table->integer('delivery_charge')->nullable();
             $table->integer('total')->nullable();
+            $table->string('status')->default('pending');
             $table->longText('notes')->nullable();
             $table->timestamps();
         });

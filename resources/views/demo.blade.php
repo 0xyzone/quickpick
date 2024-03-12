@@ -10,18 +10,14 @@ $itemPrice = 80;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $pageTitle ?? 'QuickPick' }}</title>
-    @vite(['resources/css/app.css'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="w-full bg-gray-800 min-h-svh">
-    <header>
+    <header class="sticky top-0 z-[999]">
         <nav class="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
             <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
                 <a href="#" class="flex items-center gap-2">
-                    <div class="flex flex-col">
-                        <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">QuickPick</span>
-                        <span class="self-end text-[0.6rem] font-extralight whitespace-nowrap dark:text-white">PickEat UP!</span>
-                    </div>
-                    <img src="https://flowbite.com/docs/images/logo.svg" class="mr-3 h-6 sm:h-9" alt="Flowbite Logo" />
+                    <x-dark-application-logo></x-dark-application-logo>
                 </a>
                 <div class="flex items-center lg:order-2">
                     <a href="#" class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Log in</a>
@@ -42,19 +38,7 @@ $itemPrice = 80;
                             <a href="#" class="block py-2 pr-4 pl-3 text-white rounded bg-primary-700 lg:bg-transparent lg:text-primary-700 lg:p-0 dark:text-white" aria-current="page">Home</a>
                         </li>
                         <li>
-                            <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Company</a>
-                        </li>
-                        <li>
-                            <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Marketplace</a>
-                        </li>
-                        <li>
-                            <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Features</a>
-                        </li>
-                        <li>
-                            <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Team</a>
-                        </li>
-                        <li>
-                            <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Contact</a>
+                            <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 lg:hover:text-primary-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Menu</a>
                         </li>
                     </ul>
                 </div>
@@ -63,61 +47,56 @@ $itemPrice = 80;
     </header>
 
 
-    <div id="default-carousel" class="relative w-full" data-carousel="slide">
-        <!-- Carousel wrapper -->
-        <div class="relative h-96 overflow-hidden rounded-lg md:h-[45rem]">
-            <!-- Item 1 -->
-            <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                <img src="https://fastly.picsum.photos/id/319/1920/1080.jpg?hmac=-qo9YWUL3mc1L-l4VruUcZhYMEW84vKLGItj4XYkzrs" class="absolute block w-full h-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 object-cover" alt="...">
-                <div class="absolute z-[999] w-full h-full flex flex-col gap-8 justify-center items-center">
-                    <h1 class="text-3xl md:text-6xl font-bold text-white">This is a very long header</h1>
-                    <p class="text-xs md:text-xl text-white md:w-5/12 text-center w-8/12">Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia fugit eligendi commodi veritatis, optio temporibus quasi? Quod aliquid magni reiciendis quisquam iusto, recusandae at corrupti!</p>
-                    <x-primary-button>This is button</x-primary-button>
+    @if ($heroes->count() > 0) 
+        <div id="indicator-carousel" class="relative w-full" data-carousel="slide" data-carousel-interval="7000">
+            <!-- Carousel wrapper -->
+            <div class="relative overflow-hidden rounded-lg aspect-video w-full">
+                @foreach ($heroes as $hero)
+                <!-- Item 1 -->
+                <div class="hidden duration-[1500ms] ease-in-out" data-carousel-item>
+                    <div class="absolute w-full h-full bg-black/50 z-10"></div>
+                    <img src="{{ asset('storage/' . $hero->background_photo_path) }}" class="absolute block w-full h-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 object-cover" alt="...">
+                    <div class="absolute z-[999] w-full h-full flex flex-col gap-8 justify-center items-center">
+                        <h1 class="text-3xl md:text-6xl font-bold text-white">{{ $hero->header }}</h1>
+                        <p class="text-xs md:text-xl text-white md:w-5/12 text-center w-8/12">{{ $hero->description }}</p>
+                        <a href="{{ $hero->cta_url }}">
+                            <x-primary-button>
+                                {{ $hero->cta_text }}
+                            </x-primary-button>
+                        </a>
+                    </div>
                 </div>
+                @endforeach
             </div>
-            {{-- <!-- Item 2 -->
-            <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                <img src="{{ asset('/storage/default.jpg') }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+            @if ($heroes->count() > 1) 
+                <!-- Slider indicators -->
+                <div class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
+                    @foreach ($heroes as $hero)
+                    <button type="button" class="w-3 h-3 rounded-full" aria-current="true" aria-label="Slide {{ $hero->id }}" data-carousel-slide-to="{{ $hero->id }}" ></button>
+                    @endforeach
+                </div>
+            @endif
+            <!-- Slider controls -->
+            @if ($heroes->count() > 1) 
+                <button type="button" class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
+                    <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                        <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4" />
+                        </svg>
+                        <span class="sr-only">Previous</span>
+                    </span>
+                </button>
+                <button type="button" class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
+                    <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                        <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
+                        </svg>
+                        <span class="sr-only">Next</span>
+                    </span>
+                </button>
+            @endif
         </div>
-        <!-- Item 3 -->
-        <div class="hidden duration-700 ease-in-out" data-carousel-item>
-            <img src="{{ asset('/storage/default.jpg') }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
-        </div>
-        <!-- Item 4 -->
-        <div class="hidden duration-700 ease-in-out" data-carousel-item>
-            <img src="{{ asset('/storage/default.jpg') }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
-        </div>
-        <!-- Item 5 -->
-        <div class="hidden duration-700 ease-in-out" data-carousel-item>
-            <img src="{{ asset('/storage/default.jpg') }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
-        </div> --}}
-    </div>
-    <!-- Slider indicators -->
-    <div class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
-        <button type="button" class="w-3 h-3 rounded-full" aria-current="true" aria-label="Slide 1" data-carousel-slide-to="0"></button>
-        {{-- <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 2" data-carousel-slide-to="1"></button>
-            <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 3" data-carousel-slide-to="2"></button>
-            <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 4" data-carousel-slide-to="3"></button>
-            <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 5" data-carousel-slide-to="4"></button> --}}
-    </div>
-    <!-- Slider controls -->
-    <button type="button" class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
-        <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-            <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4" />
-            </svg>
-            <span class="sr-only">Previous</span>
-        </span>
-    </button>
-    <button type="button" class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
-        <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-            <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
-            </svg>
-            <span class="sr-only">Next</span>
-        </span>
-    </button>
-    </div>
+    @endif
 
     <div class="flex justify-center items-center bg-gray-800 py-32">
         <x-item-card :itemName=$itemName :itemDescription=$itemDescription :itemPrice=$itemPrice></x-item-card>
@@ -137,34 +116,24 @@ $itemPrice = 80;
                 Like us on Facebook
                 <div class="tooltip-arrow" data-popper-arrow></div>
             </div>
-            <a href="#" data-tooltip-target="tooltip-twitter" class="inline-flex justify-center p-2 text-gray-500 rounded-lg cursor-pointer dark:text-gray-400 dark:hover:text-white hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-600">
-                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+            <a href="#" data-tooltip-target="tooltip-insta" class="inline-flex justify-center p-2 text-gray-500 rounded-lg cursor-pointer dark:text-gray-400 dark:hover:text-white hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-600">
+                {{-- <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                     <path fill="currentColor" d="M12.186 8.672 18.743.947h-2.927l-5.005 5.9-4.44-5.9H0l7.434 9.876-6.986 8.23h2.927l5.434-6.4 4.82 6.4H20L12.186 8.672Zm-2.267 2.671L8.544 9.515 3.2 2.42h2.2l4.312 5.719 1.375 1.828 5.731 7.613h-2.2l-4.699-6.237Z" />
-                </svg>
-                <span class="sr-only">Twitter</span>
+                </svg> --}}
+                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 256 256" xml:space="preserve">
+
+                    <defs>
+                    </defs>
+                    <g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;" transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)" >
+                        <path fill="currentColor" d="M 45 8.109 c 12.015 0 13.439 0.046 18.184 0.262 c 4.387 0.2 6.77 0.933 8.356 1.549 c 1.955 0.721 3.723 1.872 5.174 3.366 c 1.495 1.452 2.645 3.22 3.366 5.174 c 0.616 1.586 1.349 3.968 1.549 8.356 c 0.216 4.745 0.262 6.168 0.262 18.184 s -0.046 13.439 -0.262 18.184 c -0.2 4.387 -0.933 6.77 -1.549 8.356 c -1.514 3.924 -4.616 7.026 -8.54 8.54 c -1.586 0.616 -3.968 1.349 -8.356 1.549 C 58.44 81.847 57.016 81.893 45 81.893 S 31.56 81.847 26.816 81.63 c -4.387 -0.2 -6.77 -0.933 -8.356 -1.549 c -1.955 -0.721 -3.723 -1.872 -5.174 -3.366 c -1.495 -1.452 -2.645 -3.22 -3.366 -5.174 c -0.616 -1.586 -1.349 -3.968 -1.549 -8.356 c -0.216 -4.745 -0.262 -6.168 -0.262 -18.184 S 8.154 31.562 8.37 26.816 c 0.2 -4.387 0.933 -6.77 1.549 -8.356 c 0.721 -1.955 1.872 -3.723 3.367 -5.174 c 1.452 -1.495 3.22 -2.645 5.174 -3.366 c 1.586 -0.616 3.968 -1.349 8.356 -1.549 C 31.561 8.154 32.984 8.108 45 8.109 M 45 0 C 32.779 0 31.246 0.052 26.447 0.271 c -4.79 0.219 -8.061 0.979 -10.923 2.092 c -3.003 1.13 -5.723 2.901 -7.97 5.19 c -2.29 2.248 -4.061 4.968 -5.192 7.97 c -1.112 2.862 -1.872 6.133 -2.09 10.923 C 0.052 31.246 0 32.779 0 45 s 0.052 13.754 0.272 18.553 c 0.219 4.79 0.979 8.061 2.092 10.923 c 1.13 3.003 2.901 5.723 5.19 7.97 c 2.248 2.289 4.968 4.06 7.97 5.19 c 2.862 1.112 6.133 1.873 10.923 2.092 C 31.247 89.948 32.779 90 45 90 s 13.754 -0.052 18.553 -0.271 c 4.79 -0.219 8.061 -0.979 10.923 -2.092 c 6.044 -2.338 10.823 -7.116 13.161 -13.161 c 1.112 -2.862 1.873 -6.133 2.092 -10.923 C 89.948 58.754 90 57.221 90 45 s -0.052 -13.754 -0.271 -18.553 c -0.219 -4.79 -0.979 -8.061 -2.092 -10.923 c -1.13 -3.003 -2.901 -5.723 -5.19 -7.97 c -2.248 -2.29 -4.968 -4.061 -7.971 -5.191 c -2.862 -1.112 -6.133 -1.872 -10.923 -2.09 C 58.754 0.052 57.221 0 45 0 L 45 0 L 45 0 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                        <path d="M 45 21.892 c -12.762 0 -23.108 10.346 -23.108 23.108 S 32.238 68.108 45 68.108 S 68.108 57.762 68.108 45 l 0 0 C 68.108 32.238 57.762 21.892 45 21.892 z M 45 60 c -8.284 0 -15 -6.716 -15 -15 s 6.716 -15 15 -15 c 8.284 0 15 6.716 15 15 C 60 53.284 53.284 60 45 60 z" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: currentColor; fill-rule: nonzero; opacity: 1;" transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
+                        <circle cx="69.02" cy="20.98" r="5.4" style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: currentColor; fill-rule: nonzero; opacity: 1;" transform="  matrix(1 0 0 1 0 0) "/>
+                    </g>
+                    </svg>
+                <span class="sr-only">Instagram</span>
             </a>
-            <div id="tooltip-twitter" role="tooltip" class="inline-block absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-                Follow us on Twitter
-                <div class="tooltip-arrow" data-popper-arrow></div>
-            </div>
-            <a href="#" data-tooltip-target="tooltip-github" class="inline-flex justify-center p-2 text-gray-500 rounded-lg cursor-pointer dark:text-gray-400 dark:hover:text-white hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-600">
-                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 .333A9.911 9.911 0 0 0 6.866 19.65c.5.092.678-.215.678-.477 0-.237-.01-1.017-.014-1.845-2.757.6-3.338-1.169-3.338-1.169a2.627 2.627 0 0 0-1.1-1.451c-.9-.615.07-.6.07-.6a2.084 2.084 0 0 1 1.518 1.021 2.11 2.11 0 0 0 2.884.823c.044-.503.268-.973.63-1.325-2.2-.25-4.516-1.1-4.516-4.9A3.832 3.832 0 0 1 4.7 7.068a3.56 3.56 0 0 1 .095-2.623s.832-.266 2.726 1.016a9.409 9.409 0 0 1 4.962 0c1.89-1.282 2.717-1.016 2.717-1.016.366.83.402 1.768.1 2.623a3.827 3.827 0 0 1 1.02 2.659c0 3.807-2.319 4.644-4.525 4.889a2.366 2.366 0 0 1 .673 1.834c0 1.326-.012 2.394-.012 2.72 0 .263.18.572.681.475A9.911 9.911 0 0 0 10 .333Z" clip-rule="evenodd" />
-                </svg>
-                <span class="sr-only">Github</span>
-            </a>
-            <div id="tooltip-github" role="tooltip" class="inline-block absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-                Star us on GitHub
-                <div class="tooltip-arrow" data-popper-arrow></div>
-            </div>
-            <a href="#" data-tooltip-target="tooltip-dribbble" class="inline-flex justify-center p-2 text-gray-500 rounded-lg cursor-pointer dark:text-gray-400 dark:hover:text-white hover:text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-600">
-                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 0a10 10 0 1 0 10 10A10.009 10.009 0 0 0 10 0Zm6.613 4.614a8.523 8.523 0 0 1 1.93 5.32 20.094 20.094 0 0 0-5.949-.274c-.059-.149-.122-.292-.184-.441a23.879 23.879 0 0 0-.566-1.239 11.41 11.41 0 0 0 4.769-3.366ZM8 1.707a8.821 8.821 0 0 1 2-.238 8.5 8.5 0 0 1 5.664 2.152 9.608 9.608 0 0 1-4.476 3.087A45.758 45.758 0 0 0 8 1.707ZM1.642 8.262a8.57 8.57 0 0 1 4.73-5.981A53.998 53.998 0 0 1 9.54 7.222a32.078 32.078 0 0 1-7.9 1.04h.002Zm2.01 7.46a8.51 8.51 0 0 1-2.2-5.707v-.262a31.64 31.64 0 0 0 8.777-1.219c.243.477.477.964.692 1.449-.114.032-.227.067-.336.1a13.569 13.569 0 0 0-6.942 5.636l.009.003ZM10 18.556a8.508 8.508 0 0 1-5.243-1.8 11.717 11.717 0 0 1 6.7-5.332.509.509 0 0 1 .055-.02 35.65 35.65 0 0 1 1.819 6.476 8.476 8.476 0 0 1-3.331.676Zm4.772-1.462A37.232 37.232 0 0 0 13.113 11a12.513 12.513 0 0 1 5.321.364 8.56 8.56 0 0 1-3.66 5.73h-.002Z" clip-rule="evenodd" />
-                </svg>
-                <span class="sr-only">Dribbble</span>
-            </a>
-            <div id="tooltip-dribbble" role="tooltip" class="inline-block absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-                Follow us on Dribbble
+            <div id="tooltip-insta" role="tooltip" class="inline-block absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+                Follow us on Instagram
                 <div class="tooltip-arrow" data-popper-arrow></div>
             </div>
         </div>
