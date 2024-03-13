@@ -25,8 +25,10 @@ use App\Filament\Resources\ItemResource\RelationManagers;
 
 class ItemResource extends Resource
 {
+    protected static ?int $navigationSort = 2;
     protected static ?string $model = Item::class;
 
+    protected static ?string $navigationParentItem = 'Categories';
     protected static ?string $navigationGroup = 'Inventory';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $activeNavigationIcon = 'heroicon-m-rectangle-stack';

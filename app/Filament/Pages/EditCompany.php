@@ -18,10 +18,11 @@ class EditCompany extends Page implements HasForms
     use InteractsWithForms;
 
     public ?array $data = [];
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
-    protected static ?string $activeNavigationIcon = 'heroicon-m-document-text';
+    protected static ?int $navigationSort = 4;
+    protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
+    protected static ?string $activeNavigationIcon = 'heroicon-m-building-office-2';
     protected static string $view = 'filament.pages.edit-company';
-    protected static ?string $navigationGroup = 'System';
+    protected static ?string $navigationGroup = 'Karobar';
 
     public function mount(): void
     {

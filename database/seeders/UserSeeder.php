@@ -14,7 +14,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
+        $user = User::create([
             'name' => 'Super Admin',
             'username' => 'admin',
             'email' => 'admin@quickpick.com',
@@ -22,5 +22,7 @@ class UserSeeder extends Seeder
             'password' => Hash::make('malaiktha1290'),
             'is_admin' => true
         ]);
+
+        $user->assignRole('Super Admin');
     }
 }

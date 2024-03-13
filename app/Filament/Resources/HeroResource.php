@@ -24,8 +24,10 @@ use App\Filament\Resources\HeroResource\RelationManagers;
 
 class HeroResource extends Resource
 {
+    protected static ?int $navigationSort = 6;
     protected static ?string $model = Hero::class;
     protected static ?string $navigationGroup = 'System';
+    protected static ?string $modelLabel = 'Hero Section';
     protected static ?string $navigationIcon = 'heroicon-o-photo';
     protected static ?string $activeNavigationIcon = 'heroicon-m-photo';
 

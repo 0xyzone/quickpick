@@ -20,6 +20,7 @@ use App\Filament\Resources\CategoryResource\RelationManagers;
 
 class CategoryResource extends Resource
 {
+    protected static ?int $navigationSort = 1;
     protected static ?string $model = Category::class;
 
     protected static ?string $navigationGroup = 'Inventory';

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->decimal('sub_total', 7, 2)->nullable();
             $table->decimal('discount_amount', 7, 2)->nullable();
             $table->integer('delivery_charge')->nullable();
-            $table->integer('total')->nullable();
+            $table->decimal('total', 7, 2)->nullable();
             $table->string('status')->default('pending');
             $table->longText('notes')->nullable();
             $table->timestamps();

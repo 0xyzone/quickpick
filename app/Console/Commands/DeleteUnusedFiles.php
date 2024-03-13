@@ -2,10 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Category;
-use App\Models\Company;
 use App\Models\Hero;
 use App\Models\Item;
+use App\Models\Company;
+use App\Models\Expense;
+use App\Models\Category;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 
@@ -34,6 +35,7 @@ class DeleteUnusedFiles extends Command
         $items = Item::pluck('item_photo_path')->toArray();
         $heroes = Hero::pluck('background_photo_path')->toArray();
         $companies = Company::pluck('company_logo_path')->toArray();
+        $expenseBills = Expense::pluck('bill_photo_path')->toArray();
 
         collect(Storage::disk('public')->allFiles())
         ->reject(fn (string $file) => $file === '.gitignore')
@@ -43,6 +45,7 @@ class DeleteUnusedFiles extends Command
         ->reject(fn (string $file) => in_array($file, $items))
         ->reject(fn (string $file) => in_array($file, $heroes))
         ->reject(fn (string $file) => in_array($file, $companies))
+        ->reject(fn (string $file) => in_array($file, $expenseBills))
         ->each(fn ($file) => Storage::disk('public')->delete($file));
     }
 }

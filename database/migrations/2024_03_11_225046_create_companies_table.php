@@ -20,6 +20,10 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('pan_number')->nullable();
             $table->string('vat_number')->nullable();
+            $table->string('facebook_url')->nullable();
+            $table->string('instagram_url')->nullable();
+            $table->string('x_url')->nullable();
+            $table->string('linkedin_url')->nullable();
             $table->timestamps();
         });
     }
