@@ -21,14 +21,22 @@ class ItemObserver
     public function updated(Item $item): void
     {
         if ($item->isDirty('item_photo_path')) {
-            Storage::disk('public')->delete($item->getOriginal('item_photo_path'));
+            if (null) {
+
+            } else {
+                Storage::disk('public')->delete($item->getOriginal('item_photo_path'));
+            }
         }
     }
 
     public function saved(Item $item): void
     {
         if ($item->isDirty('item_photo_path') && !is_null($item->item_photo_path)) {
-            Storage::disk('public')->delete($item->getOriginal('item_photo_path'));
+            if (null) {
+
+            } else {
+                Storage::disk('public')->delete($item->getOriginal('item_photo_path'));
+            }
         }
     }
 
@@ -37,7 +45,7 @@ class ItemObserver
      */
     public function deleted(Item $item): void
     {
-        if(! is_null($item->item_photo_path)) {
+        if (!is_null($item->item_photo_path)) {
             Storage::disk('public')->delete($item->item_photo_path);
         }
     }
