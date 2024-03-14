@@ -26,10 +26,15 @@ Route::get('dashboard', [HomeController::class, 'dashboard'])
 Route::view('profile', 'profile')
     ->middleware(['auth', 'user'])
     ->name('profile');
-    Route::get('/demo', [DemoController::class, 'index']);
+Route::get('/demo', [DemoController::class, 'index']);
+Route::get('/favicon.png', function () {
+    return response()->redirectTo(config('app.asset_url') . '/storage/favicon.png', 302, [
+        'Content-Type' => 'image/png'
+    ]);
+});
 
 // Route::view('demo', 'demo')->name('demo');
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

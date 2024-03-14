@@ -26,6 +26,7 @@ class StaffPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
+            ->favicon(asset('storage/favicon.png'))
             ->id('staff')
             ->brandLogo(fn() => view('components.light-application-logo'))
             ->darkModeBrandLogo(fn() => view('components.dark-application-logo'))

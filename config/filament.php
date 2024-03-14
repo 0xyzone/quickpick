@@ -56,6 +56,8 @@ return [
 
     'assets_path' => null,
 
+    'favicon' => '/favicon.png',
+
     /*
     |--------------------------------------------------------------------------
     | Livewire Loading Delay
