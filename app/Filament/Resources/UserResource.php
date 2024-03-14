@@ -34,7 +34,7 @@ class UserResource extends Resource
                     ->maxLength(191),
                 Forms\Components\TextInput::make('username')
                     ->required()
-                    ->disabled()
+                    ->disabledOn('edit')
                     ->maxLength(191),
                 Select::make('roles')
                     ->required()
@@ -43,7 +43,7 @@ class UserResource extends Resource
                     ->preload(),
                 Forms\Components\TextInput::make('email')
                     ->required()
-                    ->disabled()
+                    ->disabledOn('edit')
                     ->email()
                     ->required()
                     ->maxLength(191),
