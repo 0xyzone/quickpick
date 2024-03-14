@@ -29,8 +29,6 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Category::observe(CategoryObserver::class);
-        Item::observe(ItemObserver::class);
     }
 
     /**
