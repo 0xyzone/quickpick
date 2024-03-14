@@ -12,12 +12,27 @@ class HomeController extends Controller
     {
         if(Auth::id())
         {
-            if(Auth::user()->is_admin == true)
+            if(Auth::user()->hasRole('Super Admin'))
             {
                 return redirect()->intended(RouteServiceProvider::ADMIN);
             } else {
                 return redirect()->route('dashboard');
             }
         }
+    }
+
+    public function dashboard()
+    {
+        if(Auth::user()->hasRole('Super Admin'))
+        {
+            return redirect()->intended(RouteServiceProvider::ADMIN);
+        }
+
+        if(Auth::user()->hasRole('Staff'))
+        {
+            return redirect()->intended(RouteServiceProvider::STAFF);
+        }
+
+        return view('dashboard');
     }
 }

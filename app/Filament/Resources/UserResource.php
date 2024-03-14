@@ -2,18 +2,19 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\UserResource\Widgets\UsersOverview;
 use Filament\Forms;
 use App\Models\User;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\UserResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\UserResource\RelationManagers;
+use App\Filament\Resources\UserResource\Widgets\UsersOverview;
 
 class UserResource extends Resource
 {
@@ -32,8 +33,14 @@ class UserResource extends Resource
                     ->required()
                     ->maxLength(191),
                 Forms\Components\TextInput::make('username')
+                    ->disabled()
                     ->maxLength(191),
+                Select::make('roles')
+                    ->relationship('roles', 'name')
+                    ->dehydrated(false)
+                    ->preload(),
                 Forms\Components\TextInput::make('email')
+                    ->disabled()
                     ->email()
                     ->required()
                     ->maxLength(191),
@@ -42,10 +49,6 @@ class UserResource extends Resource
                     ->maxLength(191),
                 Forms\Components\TextInput::make('alt-phone')
                     ->tel()
-                    ->maxLength(191),
-                Forms\Components\TextInput::make('password')
-                    ->password()
-                    ->required()
                     ->maxLength(191),
             ]);
     }
@@ -62,15 +65,19 @@ class UserResource extends Resource
                     ->searchable(),
                 Tables\Columns\IconColumn::make('is_admin')
                     ->boolean(),
+                Tables\Columns\BadgeColumn::make('roles.name')
+                    ->color(fn($state): string => match ($state) {
+                        'Super Admin' => 'primary',
+                        'Customer' => 'warning',
+                        'Staff' => 'info',
+                        default => 'gray'
+                    }),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('alt-phone')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('email_verified_at')
-                    ->dateTime()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -114,5 +121,10 @@ class UserResource extends Resource
             // 'create' => Pages\CreateUser::route('/create'),
             // 'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->where('name', '!=', 'Super Admin');
     }
 }

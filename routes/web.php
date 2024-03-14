@@ -17,9 +17,11 @@ use App\Http\Controllers\HomeController;
 
 Route::view('/', 'welcome');
 
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified', 'user'])
+Route::get('dashboard', [HomeController::class, 'dashboard'])
+    ->middleware(['auth', 'verified'])
     ->name('dashboard');
+
+// Route::view('dashboard', 'dashboard');
 
 Route::view('profile', 'profile')
     ->middleware(['auth', 'user'])

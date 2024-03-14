@@ -7,16 +7,10 @@ use Filament\Panel;
 use Filament\Widgets;
 use Filament\PanelProvider;
 use App\Filament\Auth\Login;
+use Filament\Navigation\MenuItem;
 use Filament\Support\Colors\Color;
-use Awcodes\Overlook\OverlookPlugin;
-use App\Filament\Resources\HeroResource;
-use App\Filament\Resources\RoleResource;
-use App\Filament\Resources\UserResource;
-use Filament\Navigation\NavigationGroup;
 use Filament\Http\Middleware\Authenticate;
-use App\Filament\Resources\ExpenseResource;
-use Awcodes\Overlook\Widgets\OverlookWidget;
-use App\Filament\Resources\PermissionResource;
+use App\Filament\Staff\Pages\Auth\Register;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Routing\Middleware\SubstituteBindings;
@@ -25,49 +19,33 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
-use Leandrocfe\FilamentApexCharts\FilamentApexChartsPlugin;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 
-class AdminPanelProvider extends PanelProvider
+class StaffPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->default()
-            ->navigationGroups([
-                'Inventory',
-                'Karobar',
-                'System'
-            ])
-            ->viteTheme('resources/css/filament/admin/theme.css')
+            ->id('staff')
             ->brandLogo(fn() => view('components.light-application-logo'))
             ->darkModeBrandLogo(fn() => view('components.dark-application-logo'))
-            ->favicon(asset('storage/favicon.png'))
-            ->id('admin')
-            ->path('admin')
-            // ->sidebarCollapsibleOnDesktop()
+            ->path('staff')
             ->colors([
-                'primary' => Color::Violet,
+                'primary' => Color::Amber,
             ])
-            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
-            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
+            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Staff\\Resources')
+            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Staff\\Pages')
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
-            ->plugins([
-                FilamentApexChartsPlugin::make(),
-                OverlookPlugin::make()
-                ->excludes([
-                    ExpenseResource::class,
-                    HeroResource::class,
-                    RoleResource::class,
-                    PermissionResource::class
-                ])
+            ->profile()
+            ->userMenuItems([
+                'profile' => MenuItem::make()->label('Edit profile'),
+                // ...
             ])
+            ->discoverWidgets(in: app_path('Filament/Staff/Widgets'), for: 'App\\Filament\\Staff\\Widgets')
             ->widgets([
-                // Widgets\AccountWidget::class,
-                OverlookWidget::class
+                Widgets\AccountWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
