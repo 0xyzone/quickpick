@@ -33,6 +33,8 @@ new #[Layout('layouts.guest')] class extends Component
 
         event(new Registered($user = User::create($validated)));
 
+        $user->assignRole('Customer');
+
         Auth::login($user);
 
         $this->redirect(RouteServiceProvider::HOME, navigate: true);
@@ -50,7 +52,7 @@ new #[Layout('layouts.guest')] class extends Component
 
         
         <!-- Usename -->
-        <div>
+        <div class="mt-4">
             <x-input-label for="username" :value="__('Username')" />
             <x-text-input wire:model="username" id="username" class="block mt-1 w-full" type="text" name="username" required />
             <x-input-error :messages="$errors->get('username')" class="mt-2" />

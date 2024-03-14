@@ -125,7 +125,7 @@ class OrderResource extends Resource
                             ])
                             ->default(0)
                             ->hidden(fn(Get $get): bool => $get('type') == 'percent' ? false : true),
-                        TextInput::make('amount')
+                        TextInput::make('discount_amount')
                             ->numeric()
                             ->hidden(fn(Get $get): bool => $get('type') == 'amount' ? false : true)
                             ->prefix('रु ')
@@ -230,8 +230,7 @@ class OrderResource extends Resource
             $discount = $subtotal * ($percent / 100);
         }
         if ($discountType == 'amount') {
-            $amount = $get('amount');
-            $discount = $amount;
+            $discount = $get('discount_amount');
         }
         $deliveryCharge = $get('delivery_charge');
         $set('sub_total', $subtotal);

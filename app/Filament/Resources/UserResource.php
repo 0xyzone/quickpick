@@ -21,7 +21,8 @@ class UserResource extends Resource
     protected static ?string $model = User::class;
     protected static ?int $navigationSort = 1;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user';
+    protected static ?string $activeNavigationIcon = 'heroicon-m-user';
 
     public static function form(Form $form): Form
     {
@@ -32,8 +33,6 @@ class UserResource extends Resource
                     ->maxLength(191),
                 Forms\Components\TextInput::make('username')
                     ->maxLength(191),
-                Forms\Components\Toggle::make('is_admin')
-                    ->required(),
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required()
@@ -44,7 +43,6 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('alt-phone')
                     ->tel()
                     ->maxLength(191),
-                Forms\Components\DateTimePicker::make('email_verified_at'),
                 Forms\Components\TextInput::make('password')
                     ->password()
                     ->required()

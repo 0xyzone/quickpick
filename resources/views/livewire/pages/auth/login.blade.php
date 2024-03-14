@@ -34,7 +34,7 @@ new #[Layout('layouts.guest')] class extends Component
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form wire:submit="login">
+    <form wire:submit.prevent="login" onsubmit="$('#submit').attr('disabled', true)">
         <!-- Username -->
         <div>
             <x-input-label for="username" :value="__('Username')" />
@@ -66,7 +66,7 @@ new #[Layout('layouts.guest')] class extends Component
             </a>
             @endif
 
-            <x-primary-button class="ms-3">
+            <x-primary-button class="ms-3" id="submit">
                 {{ __('Log in') }}
             </x-primary-button>
         </div>

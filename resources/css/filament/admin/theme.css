@@ -4,6 +4,6 @@
 
 @layer base {
     body {
-        @apply selection:bg-primary-700;
+        @apply selection:bg-primary-700 selection:text-white;
     }
 }
