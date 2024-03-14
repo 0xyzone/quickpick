@@ -31,10 +31,10 @@ class StaffPanelProvider extends PanelProvider
             ->darkModeBrandLogo(fn() => view('components.dark-application-logo'))
             ->path('staff')
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Indigo,
             ])
-            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Staff\\Resources')
-            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Staff\\Pages')
+            ->discoverResources(in: app_path('Filament/Staff/Resources'), for: 'App\\Filament\\Staff\\Resources')
+            ->discoverPages(in: app_path('Filament/Staff/Pages'), for: 'App\\Filament\\Staff\\Pages')
             ->pages([
                 Pages\Dashboard::class,
             ])

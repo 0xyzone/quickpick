@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Filament\Resources\OrderResource\Pages;
+namespace App\Filament\Staff\Resources\OrderResource\Pages;
 
 use Filament\Actions;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\OrderResource;
+use App\Filament\Staff\Resources\OrderResource;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Resources\Pages\ListRecords\Tab;
 

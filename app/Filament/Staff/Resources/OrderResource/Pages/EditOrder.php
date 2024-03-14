@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\OrderResource\Pages;
+namespace App\Filament\Staff\Resources\OrderResource\Pages;
 
 use App\Filament\Resources\OrderResource;
 use Filament\Actions;
