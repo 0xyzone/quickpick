@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Staff\Resources\OrderResource;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
@@ -60,7 +61,7 @@ class AdminPanelProvider extends PanelProvider
                 OverlookPlugin::make()
                 ->excludes([
                     ExpenseResource::class,
-                    HeroResource::class,
+                    // HeroResource::class,
                     RoleResource::class,
                     PermissionResource::class
                 ])
