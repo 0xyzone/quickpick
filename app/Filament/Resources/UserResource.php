@@ -33,22 +33,27 @@ class UserResource extends Resource
                     ->required()
                     ->maxLength(191),
                 Forms\Components\TextInput::make('username')
+                    ->required()
                     ->disabled()
                     ->maxLength(191),
                 Select::make('roles')
+                    ->required()
                     ->relationship('roles', 'name')
                     ->dehydrated(false)
                     ->preload(),
                 Forms\Components\TextInput::make('email')
+                    ->required()
                     ->disabled()
                     ->email()
                     ->required()
                     ->maxLength(191),
                 Forms\Components\TextInput::make('phone')
+                    ->required()
                     ->tel()
                     ->maxLength(191),
                 Forms\Components\TextInput::make('alt-phone')
                     ->tel()
+                    ->placeholder('(this is optional)')
                     ->maxLength(191),
             ]);
     }
