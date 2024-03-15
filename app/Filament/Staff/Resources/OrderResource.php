@@ -245,11 +245,11 @@ class OrderResource extends Resource
             ->defaultSort('id', 'desc')
             ->recordClasses(fn(Model $record) => match ($record->status) {
                 'pending' => null,
-                'preparing' => '!bg-yellow-600 hover:!bg-yellow-800',
-                'ready' => '!bg-indigo-700 hover:!bg-indigo-800',
-                'out_delivery' => '!bg-cyan-500 hover:!bg-cyan-600',
-                'delivered' => '!bg-emerald-500 hover:!bg-emerald-600',
-                'cancelled' => '!bg-red-500 hover:!bg-red-600',
+                'preparing' => '!bg-yellow-600/20 hover:!bg-yellow-800/20',
+                'ready' => '!bg-indigo-700/20 hover:!bg-indigo-800/20',
+                'out_delivery' => '!bg-cyan-500/20 hover:!bg-cyan-600/20',
+                'delivered' => '!bg-emerald-500/20 hover:!bg-emerald-600/20',
+                'cancelled' => '!bg-red-500/20 hover:!bg-red-600/20',
                 default => null
             })
             ->striped()
@@ -301,7 +301,7 @@ class OrderResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->poll('10s');
+            ->poll('1s');
     }
 
     public static function getRelations(): array

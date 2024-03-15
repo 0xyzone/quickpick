@@ -61,7 +61,7 @@ class AdminPanelProvider extends PanelProvider
                 OverlookPlugin::make()
                 ->excludes([
                     ExpenseResource::class,
-                    // HeroResource::class,
+                    HeroResource::class,
                     RoleResource::class,
                     PermissionResource::class
                 ])

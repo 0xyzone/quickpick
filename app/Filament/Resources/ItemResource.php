@@ -13,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\Layout\Grid;
@@ -76,15 +77,15 @@ class ItemResource extends Resource
                                 ->grow(0)
                                 ->width(15)
                                 ->height(15),
-                                TextColumn::make('category.name')
+                            TextColumn::make('category.name')
                         ]),
-                            TextColumn::make('name')
-                                ->label('Item Name')
-                                ->color('primary')
-                                ->searchable()
-                                ->sortable(),
+                        TextColumn::make('name')
+                            ->label('Item Name')
+                            ->color('primary')
+                            ->searchable()
+                            ->sortable(),
                         TextColumn::make('description')
-                        ->wrap()
+                            ->wrap()
                             ->limit(120)
                             ->color('gray')
                             ->tooltip(function (TextColumn $column): ?string {

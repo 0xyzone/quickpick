@@ -34,6 +34,7 @@ Route::get('/favicon.png', function () {
 });
 
 // Route::view('demo', 'demo')->name('demo');
+Route::view('public','PublicCompletedOrders')->name('public');
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 

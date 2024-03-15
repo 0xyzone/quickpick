@@ -43,7 +43,7 @@ class OrderResource extends Resource
                 Hidden::make('user_id')
                     ->default(auth()->id()),
                 Select::make('order_type')
-                ->selectablePlaceholder(false)
+                    ->selectablePlaceholder(false)
                     ->options([
                         'on_site' => 'Pasal',
                         'off_site' => 'Online/Call'
@@ -111,7 +111,7 @@ class OrderResource extends Resource
                             ])
                             ->reactive(),
                         Select::make('percent')
-                        ->selectablePlaceholder(false)
+                            ->selectablePlaceholder(false)
                             ->options([
                                 0 => '0',
                                 5 => '5',
@@ -134,8 +134,8 @@ class OrderResource extends Resource
                     ->label('Delivery Charge')
                     ->schema([
                         Select::make('delivery_charge')
-                        ->selectablePlaceholder(false)
-                        ->label('Amount')
+                            ->selectablePlaceholder(false)
+                            ->label('Amount')
                             ->options([
                                 0 => '0',
                                 100 => '100',
@@ -176,7 +176,7 @@ class OrderResource extends Resource
                                     return 'रु ' . $get('discount_amount');
                                 }),
                         ])
-                        ->hidden(fn(Get $get): bool => $get('discount_amount') > 0 ? false : true),
+                            ->hidden(fn(Get $get): bool => $get('discount_amount') > 0 ? false : true),
                         Split::make([
                             Placeholder::make('delivery')
                                 ->label('')
@@ -189,7 +189,7 @@ class OrderResource extends Resource
                                     return 'रु ' . $get('delivery_charge');
                                 }),
                         ])
-                        ->hidden(fn(Get $get): bool => $get('delivery_charge') > 0 ? false : true),
+                            ->hidden(fn(Get $get): bool => $get('delivery_charge') > 0 ? false : true),
                         Split::make([
                             Placeholder::make('total')
                                 ->label('')
@@ -239,11 +239,11 @@ class OrderResource extends Resource
             ->defaultSort('id', 'desc')
             ->recordClasses(fn(Model $record) => match ($record->status) {
                 'pending' => null,
-                'preparing' => '!bg-yellow-600 hover:!bg-yellow-800',
-                'ready' => '!bg-indigo-700 hover:!bg-indigo-800',
-                'out_delivery' => '!bg-cyan-500 hover:!bg-cyan-600',
-                'delivered' => '!bg-emerald-500 hover:!bg-emerald-600',
-                'cancelled' => '!bg-red-500 hover:!bg-red-600',
+                'preparing' => '!bg-yellow-600/20 hover:!bg-yellow-800/20',
+                'ready' => '!bg-indigo-700/20 hover:!bg-indigo-800/20',
+                'out_delivery' => '!bg-cyan-500/20 hover:!bg-cyan-600/20',
+                'delivered' => '!bg-emerald-500/20 hover:!bg-emerald-600/20',
+                'cancelled' => '!bg-red-500/20 hover:!bg-red-600/20',
                 default => null
             })
             ->striped()
@@ -295,7 +295,7 @@ class OrderResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->poll('10s');
+            ->poll('1s');
     }
 
     public static function getRelations(): array
