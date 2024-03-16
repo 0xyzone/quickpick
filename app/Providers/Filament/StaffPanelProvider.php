@@ -39,6 +39,7 @@ class StaffPanelProvider extends PanelProvider
             ])
             ->colors([
                 'primary' => Color::Indigo,
+                'custom' => Color::Violet
             ])
             ->discoverResources(in: app_path('Filament/Staff/Resources'), for: 'App\\Filament\\Staff\\Resources')
             ->discoverPages(in: app_path('Filament/Staff/Pages'), for: 'App\\Filament\\Staff\\Pages')
