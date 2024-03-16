@@ -24,7 +24,7 @@ new #[Layout('layouts.guest')] class extends Component
         $user = auth()->user();
 
         if ($user->hasRole('Super Admin') || $user->hasRole('Admin')) {
-        $this->redirectIntended(default: RouteServiceProvider::ADMIN);
+        $this->redirect(route('filament.admin.pages.dashboard'));
         } elseif ($user->hasRole('Staff')) {
             $this->redirect(route('filament.staff.pages.dashboard'));
         } else {

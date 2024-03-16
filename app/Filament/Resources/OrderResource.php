@@ -295,7 +295,7 @@ class OrderResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->poll('1s');
+            ->poll('10s');
     }
 
     public static function getRelations(): array
