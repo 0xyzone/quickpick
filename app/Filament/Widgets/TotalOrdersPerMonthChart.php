@@ -11,30 +11,30 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
 use Leandrocfe\FilamentApexCharts\Widgets\ApexChartWidget;
 
-class TotalOrdersChart extends ApexChartWidget
+class TotalOrdersPerMonthChart extends ApexChartWidget
 {
-    protected static ?int $sort = 3;
+    protected static ?int $sort = 4;
     /**
      * Chart Id
      *
      * @var string
      */
-    protected static string $chartId = 'totalOrdersChart';
+    protected static string $chartId = 'totalOrdersChartMonth';
 
     /**
      * Widget Title
      *
      * @var string|null
      */
-    protected static ?string $heading = 'Orders Per Day';
+    protected static ?string $heading = 'Orders Per Month';
 
     protected function getFormSchema(): array
     {
         return [
             DatePicker::make('date_start')
-                ->default(now()->subdays(5)),
+                ->default(now()->startOfYear()),
             DatePicker::make('date_end')
-                ->default(now()->addDays(2)),
+                ->default(now()->endOfYear()),
         ];
     }
 
@@ -52,7 +52,7 @@ class TotalOrdersChart extends ApexChartWidget
                 start: Carbon::parse($this->filterFormData['date_start']),
                 end: Carbon::parse($this->filterFormData['date_end']),
             )
-            ->perDay()
+            ->perMonth()
             ->count();
         return [
             'chart' => [

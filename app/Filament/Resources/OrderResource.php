@@ -280,7 +280,9 @@ class OrderResource extends Resource
                         'cancelled' => 'Cancelled',
                     ]),
                 TextInputColumn::make('notes')
-                    ->label('Remarks')
+                    ->label('Remarks'),
+            TextColumn::make('created_at')
+            ->date()
             ])
             ->filters([
                 //
