@@ -21,11 +21,14 @@ new #[Layout('layouts.guest')] class extends Component
         // dd(auth()->user());
 
         Session::regenerate();
+        $user = auth()->user();
 
-        if (auth()->user()->is_admin == 1) {
+        if ($user->hasRole('Super Admin') || $user->hasRole('Admin')) {
         $this->redirectIntended(default: RouteServiceProvider::ADMIN);
+        } elseif ($user->hasRole('Staff')) {
+            $this->redirect(route('filament.staff.pages.dashboard'));
         } else {
-            $this->redirectIntended(default: RouteServiceProvider::HOME, navigate: true);
+            $this->redirect(route('dashboard'));
         }
     }
 }; ?>

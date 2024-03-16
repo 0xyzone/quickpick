@@ -14,7 +14,9 @@ class HomeController extends Controller
         {
             if(Auth::user()->hasRole('Super Admin'))
             {
-                return redirect()->intended(RouteServiceProvider::ADMIN);
+                return redirect()->route('filament.admin.pages.dashboard');
+            } elseif(Auth::user()->hasRole('Staff')) {
+                return redirect()->route('filament.staff.pages.dashboard');
             } else {
                 return redirect()->route('dashboard');
             }
