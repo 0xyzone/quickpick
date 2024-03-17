@@ -11,8 +11,8 @@ class CompletedOrders extends Component
     public $ordersPrepping;
     public function render()
     {
-        $this->orders = Order::where('status', 'ready')->orderBy('updated_at', 'desc')->limit(3)->get();
-        $this->ordersPrepping = Order::where('status', 'preparing')->orderBy('updated_at', 'desc')->limit(3)->get();
+        $this->orders = Order::where('status', 'ready')->orderBy('updated_at', 'desc')->limit(6)->get();
+        $this->ordersPrepping = Order::where('status', 'preparing')->orderBy('updated_at', 'desc')->limit(6)->get();
         return view('livewire.completed-orders');
     }
 }

@@ -39,17 +39,25 @@ class TotalOrdersToday extends BaseWidget
             ->extraAttributes([
                 'class' => 'bg-gradient-to-t from-lime-500 to-lime-950 hover:scale-105 duration-300'
             ]),
+            Stat::make('Total Orders This Month', Order::whereMonth('created_at', Carbon::now()->month)->count())
+            ->extraAttributes([
+                'class' => 'dark:bg-gradient-to-t from-amber-500 to-amber-950 hover:scale-105 duration-300'
+            ]),
             Stat::make('Total Orders Today', Order::whereDate('created_at', Carbon::today())->count())
             ->extraAttributes([
                 'class' => 'dark:bg-gradient-to-t from-violet-500 to-violet-950 hover:scale-105 duration-300'
             ]),
-            Stat::make('Total earnings Today', 'रु ' . Order::whereDate('created_at', Carbon::today())->where('status', 'ready')->orWhere('status', 'delivered')->sum('total'))
+            Stat::make('Total Orders This Year', Order::whereYear('created_at', Carbon::now()->year)->count())
             ->extraAttributes([
-                'class' => 'bg-gradient-to-t from-sky-500 to-sky-950 hover:scale-105 duration-300'
+                'class' => 'dark:bg-gradient-to-t from-sky-500 to-sky-950 hover:scale-105 duration-300'
             ]),
-            Stat::make('Total earnings this month', 'रु ' . Order::whereMonth('created_at', Carbon::now()->month)->where('status', 'ready')->orWhere('status', 'delivered')->sum('total'))
+            Stat::make('Total earnings this month', 'रु ' . Order::whereMonth('created_at', Carbon::now()->month)->whereIn('status', ['ready', 'delivered'])->sum('total'))
             ->extraAttributes([
                 'class' => 'bg-gradient-to-t from-amber-500 to-amber-950 hover:scale-105 duration-300'
+            ]),
+            Stat::make('Total earnings Today', 'रु ' . Order::whereDate('created_at', Carbon::today())->whereIn('status', ['ready', 'delivered'])->sum('total'))
+            ->extraAttributes([
+                'class' => 'bg-gradient-to-t from-violet-500 to-violet-950 hover:scale-105 duration-300'
             ]),
         ];
     }

@@ -9,9 +9,9 @@
     <link rel="shortcut icon" href="{{ asset('favicon.png') }}" type="image/x-icon">
 </head>
 <body class="bg-gray-900">
-<div class="w-full min-h-svh flex flex-col justify-center items-center gap-6">
-    <h1 class="text-white text-6xl font-bold animate-bounce">Order Status</h1>
-    @livewire('completed-orders')
-</div>
+    <div class="w-full min-h-svh flex flex-col justify-center items-center gap-6">
+        <h1 class="text-white text-6xl font-bold animate-bounce">Order Status</h1>
+        @livewire('completed-orders')
+    </div>
 </body>
 </html>

@@ -47,10 +47,10 @@ $itemPrice = 80;
     </header>
 
 
-    @if ($heroes->count() > 0) 
+    {{-- @if ($heroes->count() > 0) 
         <div id="indicator-carousel" class="relative w-full" data-carousel="slide" data-carousel-interval="7000">
             <!-- Carousel wrapper -->
-            <div class="relative overflow-hidden rounded-lg aspect-video w-full">
+            <div class="relative overflow-hidden h-96 w-full">
                 @foreach ($heroes as $hero)
                 <!-- Item 1 -->
                 <div class="hidden duration-[1500ms] ease-in-out" data-carousel-item>
@@ -96,11 +96,23 @@ $itemPrice = 80;
                 </button>
             @endif
         </div>
-    @endif
+    @endif --}}
 
-    <div class="flex justify-center items-center bg-gray-800 py-32">
-        <x-item-card :itemName=$itemName :itemDescription=$itemDescription :itemPrice=$itemPrice></x-item-card>
+    {{-- <div class="grid grid-cols-2 md:grid-cols-4 max-w-7xl mx-auto bg-gray-800 py-32 gap-4">
+        @foreach ($items as $item)
+        @php
+            $itemName = $item->name;
+            $itemDescription = $item->description;
+            $itemPrice = $item->price;
+            $itemImage = $item->item_photo_path;
+        @endphp
+            <x-item-card :itemName=$itemName :itemDescription=$itemDescription :itemPrice=$itemPrice :itemImage=$itemImage></x-item-card>
+        @endforeach
     </div>
+    <div class="max-w-7xl mx-auto">
+        {{ $items->links() }}
+    </div> --}}
+    @livewire('menu')
     <footer class="bg-white rounded-lg shadow sm:flex sm:items-center sm:justify-between p-4 sm:p-6 xl:p-8 dark:bg-gray-800 antialiased">
         <p class="mb-4 text-sm text-center text-gray-500 dark:text-gray-400 sm:mb-0">
             &copy; {{ Carbon\Carbon::now()->format('Y') == '2024' ? '2024' : '2024 - ' . Carbon\Carbon::now()->format('Y') }} <a href="#" class="hover:text-violet-500 duration-300" target="_blank">QuickPick</a>. All rights reserved.
