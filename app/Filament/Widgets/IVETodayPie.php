@@ -10,6 +10,28 @@ class IVETodayPie extends ChartWidget
 {
     protected static ?int $sort = 6;
     protected static ?string $heading = 'Income Vs Expense Today';
+    protected static ?string $maxHeight = '250px';
+
+    protected static ?array $options = [
+        'scales' => [
+            'y' => [
+                'grid' => [
+                    'display' => false,
+                ],
+                'ticks' => [
+                    'display' => false,
+                ]
+            ],
+            'x' => [
+                'grid' => [
+                    'display' => false,
+                ],
+                'ticks' => [
+                    'display' => false,
+                ]
+            ],
+        ],
+    ];
 
     protected function getData(): array
     {

@@ -11,6 +11,7 @@ class IncomeVsExpense extends ChartWidget
 {
     protected static ?int $sort = 5;
     protected static ?string $heading = 'Income vs Expense (Per Day)';
+    protected static ?string $maxHeight = '250px';
 
     protected function getData(): array
     {
