@@ -260,7 +260,8 @@ class OrderResource extends Resource
                 TextColumn::make('orderItems.item.name')
                     ->listWithLineBreaks()
                     ->limitList(3)
-                    ->expandableLimitedList(),
+                    ->expandableLimitedList()
+                    ->badge(),
                 IconColumn::make('order_type')
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->label('Type')
