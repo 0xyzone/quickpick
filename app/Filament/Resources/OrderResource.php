@@ -254,9 +254,15 @@ class OrderResource extends Resource
                 TextColumn::make('user.name')
                     ->label('Ordered By'),
                 TextColumn::make('address')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->default('-')
                     ->limit(25),
+                TextColumn::make('orderItems.item.name')
+                    ->listWithLineBreaks()
+                    ->limitList(3)
+                    ->expandableLimitedList(),
                 IconColumn::make('order_type')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->label('Type')
                     ->icon(fn(string $state): string => match ($state) {
                         'on_site' => 'heroicon-o-building-storefront',
@@ -281,8 +287,8 @@ class OrderResource extends Resource
                     ]),
                 TextInputColumn::make('notes')
                     ->label('Remarks'),
-            TextColumn::make('created_at')
-            ->date()
+                TextColumn::make('created_at')
+                    ->date()
             ])
             ->filters([
                 //

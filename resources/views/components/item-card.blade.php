@@ -1,6 +1,6 @@
 <div class="bg-violet-900 rounded-2xl flex flex-col overflow-clip text-white hover:scale-105 duration-300 hover:shadow-2xl hover:shadow-purple-900 group">
     <div class="bg-gray-300 rounded-bl-[4rem] overflow-clip shrink-0">
-        <img src="{{ $itemImage ? asset('storage/' . $itemImage) : asset('defaultImage.png') }}" alt="" class="group-hover:scale-[1.1] duration-300 w-96 p-10">
+        <img src="{{ $itemImage ? Storage::url($itemImage) : asset('defaultImage.png') }}" alt="" class="group-hover:scale-[1.1] duration-300">
     </div>
     <div class="px-8 py-4 w-full space-y-4 flex flex-col justify-between h-full grow-0">
         <div>

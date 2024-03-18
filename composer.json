@@ -25,7 +25,8 @@
         "livewire/livewire": "^3.4",
         "livewire/volt": "^1.0",
         "mokhosh/filament-kanban": "^2.7",
-        "spatie/eloquent-sortable": "*"
+        "spatie/eloquent-sortable": "*",
+        "z3d0x/filament-logger": "^0.7.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

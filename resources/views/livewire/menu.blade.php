@@ -8,7 +8,7 @@
         @endforeach
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-4 max-w-7xl mx-auto bg-gray-800 py-8 gap-4 px-6 duration-300">
+    <div class="grid grid-cols-2 md:grid-cols-4 max-w-7xl mx-auto bg-gray-800 py-8 gap-4 px-6 duration-300" wire:differ>
         @foreach ($items as $item)
         @php
         $itemName = $item->name;
