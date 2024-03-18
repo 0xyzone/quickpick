@@ -257,10 +257,10 @@ class OrderResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->default('-')
                     ->limit(25),
-                TextColumn::make('orderItems.item.name')
+                TextColumn::make('orderItems')
+                ->formatStateUsing(fn ($state, Get $get): string => $state->item->name . ' (x' . ($state->quantity == floor($state->quantity) ? number_format($state->quantity) : number_format($state->quantity, 1)) . ')')
                     ->listWithLineBreaks()
-                    ->limitList(3)
-                    ->expandableLimitedList()
+                    ->limitList(4)
                     ->badge(),
                 IconColumn::make('order_type')
                     ->toggleable(isToggledHiddenByDefault: true)
