@@ -11,6 +11,7 @@ use Filament\Forms\Set;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Illuminate\Support\Facades\URL;
 use Filament\Forms\Components\Split;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
@@ -258,7 +259,7 @@ class OrderResource extends Resource
                     ->default('-')
                     ->limit(25),
                 TextColumn::make('orderItems')
-                ->formatStateUsing(fn ($state, Get $get): string => $state->item->name . ' (x' . ($state->quantity == floor($state->quantity) ? number_format($state->quantity) : number_format($state->quantity, 1)) . ')')
+                    ->formatStateUsing(fn($state, Get $get): string => $state->item->name . ' (x' . ($state->quantity == floor($state->quantity) ? number_format($state->quantity) : number_format($state->quantity, 1)) . ')')
                     ->listWithLineBreaks()
                     ->limitList(4)
                     ->badge(),
@@ -297,6 +298,11 @@ class OrderResource extends Resource
             ->actions([
                 // Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('Print Invoice')
+                    ->url(function (Model $record) {
+                        return URL::route('invoice.print', ['order' => $record]);
+                    }, shouldOpenInNewTab: true)
+                    ->button()
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -304,6 +310,16 @@ class OrderResource extends Resource
                 ]),
             ])
             ->poll('10s');
+    }
+
+    public function printInvoice(Order $order)
+    {
+        // Generate and print the invoice for the given order
+        // You can customize this logic as per your requirement
+        // For example, you can redirect to a route that handles invoice printing
+
+        // For demonstration purpose, let's assume we redirect to a route
+        return redirect()->route('invoice.print', ['order' => $order]);
     }
 
     public static function getRelations(): array

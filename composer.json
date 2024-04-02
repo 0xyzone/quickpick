@@ -12,6 +12,7 @@
         "althinect/filament-spatie-roles-permissions": "^2.2",
         "awcodes/overlook": "^2.2",
         "aymanalhattami/filament-slim-scrollbar": "^2.0",
+        "barryvdh/laravel-dompdf": "^2.1",
         "cerbero/laravel-enum": "^1.3",
         "filament/filament": "3.2",
         "filament/spatie-laravel-media-library-plugin": "3.2",

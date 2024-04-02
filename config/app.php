@@ -171,6 +171,7 @@ return [
         App\Providers\Filament\StaffPanelProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\VoltServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -186,6 +187,11 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
+        'PDF' => \Barryvdh\DomPDF\Facade\Pdf::class,
     ])->toArray(),
-
+    // 'aliases' => [
+    //     // Other aliases...
+    //     'PDF' => Barryvdh\DomPDF\Facade::class,
+    // ],
+    
 ];

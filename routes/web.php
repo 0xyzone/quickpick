@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DemoController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InvoiceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,5 +38,7 @@ Route::get('/favicon.png', function () {
 Route::view('public','PublicCompletedOrders')->name('public');
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/invoices/{order}', [InvoiceController::class, 'print'])->name('invoice.print');
+
 
 require __DIR__ . '/auth.php';
