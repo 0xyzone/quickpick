@@ -303,6 +303,7 @@ class OrderResource extends Resource
                         return URL::route('invoice.print', ['order' => $record]);
                     }, shouldOpenInNewTab: true)
                     ->button()
+                    ->visible(fn (Model $record): bool => $record->status != 'cancelled')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
