@@ -4,7 +4,7 @@
     <title>Invoice - {{ $order->id }}</title>
     <style>
         @page {
-            size: 80mm;
+            size:  80mm 297mm;
             /* Set paper size to 80mm width */
             margin: 0;
             /* Reset margins for the entire page */
@@ -16,28 +16,6 @@
             font-family: sans-serif;
             font-size: 10px;
             /* Adjust font size as needed */
-        }
-
-        .invoice {
-            width: 80mm;
-            /* Adjust width to match your printer's paper size */
-            margin: 0 auto;
-            padding: 10px;
-            overflow: hidden;
-            /* Hide content that overflows the height */
-        }
-
-        .invoice-content {
-            /* Set a max-height to prevent overflowing */
-            max-height: calc(100vh - 20px);
-            /* Calculate available height minus padding */
-            overflow: hidden;
-            /* Hide content that exceeds max-height */
-        }
-
-        .invoice p {
-            margin: 0;
-            padding: 0;
         }
 
         table {
@@ -63,6 +41,16 @@
             text-align: center;
         }
 
+        h1{
+            margin: 0;
+            padding: 0;
+        }
+
+        p{
+            margin: 0;
+            padding: 0;
+        }
+
         /* Add additional styles as needed */
 
     </style>
@@ -71,6 +59,7 @@
     <div class="invoice">
         <div class="invoice-content">
             <h1>Order #{{ $order->id }}</h1>
+            <p>Order Placed {{ Carbon\Carbon::parse($order->created_at)->format('jS M, Y') }}</p>
             {{-- <p>Ordered By: {{ $order->user->name }}</p> --}}
             {{-- <p>Address: {{ $order['address'] }}</p> --}}
             <!-- Add more order details here -->
@@ -118,14 +107,14 @@
             window.addEventListener('resize', adjustInvoiceHeight); // Adjust height on window resize
         };
 
-        // function adjustInvoiceHeight() {
-        //     var invoice = document.querySelector('.invoice');
-        //     var content = document.querySelector('.invoice-content');
-        //     // Calculate the available height (viewport height minus padding)
-        //     var availableHeight = window.innerHeight - (parseInt(window.getComputedStyle(invoice).paddingTop) * 2);
-        //     // Set the content height to the available height
-        //     content.style.maxHeight = availableHeight + 'px';
-        // }
+        function adjustInvoiceHeight() {
+            var invoice = document.querySelector('.invoice');
+            var content = document.querySelector('.invoice-content');
+            // Calculate the available height(viewport height minus padding)
+            var availableHeight = window.innerHeight - (parseInt(window.getComputedStyle(invoice).paddingTop) * 2);
+            // Set the content height to the available height
+            content.style.maxHeight = availableHeight + 'px';
+        }
 
         function adjustPageHeight() {
             var invoiceContent = document.querySelector('.invoice-content');

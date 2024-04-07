@@ -6,10 +6,12 @@ use Filament\Forms;
 use App\Models\Item;
 use Filament\Tables;
 use App\Models\Order;
+use App\Models\Company;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Mike42\Escpos\Printer;
 use Filament\Resources\Resource;
 use Illuminate\Support\Facades\URL;
 use Filament\Forms\Components\Split;
@@ -28,7 +30,9 @@ use Filament\Forms\Components\Placeholder;
 use Filament\Tables\Columns\TextInputColumn;
 use App\Filament\Resources\OrderResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Mike42\Escpos\PrintConnectors\FilePrintConnector;
 use App\Filament\Resources\OrderResource\RelationManagers;
+use charlieuki\ReceiptPrinter\ReceiptPrinter as ReceiptPrinter;
 
 class OrderResource extends Resource
 {
@@ -299,11 +303,80 @@ class OrderResource extends Resource
                 // Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\Action::make('Print Invoice')
-                    ->url(function (Model $record) {
-                        return URL::route('invoice.print', ['order' => $record]);
-                    }, shouldOpenInNewTab: true)
+                    // ->url(function (Model $record) {
+                    //     return URL::route('invoice.print', ['order' => $record]);
+                    // }, shouldOpenInNewTab: true)
                     ->button()
-                    ->visible(fn (Model $record): bool => $record->status != 'cancelled')
+                    ->action(function (Order $record) {
+                        $company = Company::find(1);
+                        // Set params
+                        $mid = '123123456';
+                        $store_name = $company ? $company->name : 'No company name set';
+                        $store_address = $company ? $company->address : 'No company address set';
+                        $store_phone = $company ? $company->phone : 'No company name set';
+                        $store_email = 'yourmart@email.com';
+                        $store_website = 'yourmart.com';
+                        $tax_percentage = 10;
+                        $transaction_id = 'TX123ABC456';
+                        $currency = 'Rp';
+                        // $image_path = 'logo.png';
+            
+                        // Set items
+                        $items = ;
+
+                        // Init printer
+                        $printer = new ReceiptPrinter;
+                        $printer->init(
+                            config('receiptprinter.connector_type'),
+                            config('receiptprinter.connector_descriptor')
+                        );
+
+                        // Set store info
+                        $printer->setStore($mid, $store_name, $store_address, $store_phone, $store_email, $store_website);
+
+                        // Set currency
+                        $printer->setCurrency($currency);
+
+                        // Add items
+                        foreach ($items as $item) {
+                            $printer->addItem(
+                                $item['name'],
+                                $item['qty'],
+                                $item['price']
+                            );
+                        }
+                        // Set tax
+                        $printer->setTax($tax_percentage);
+
+                        // Calculate total
+                        $printer->calculateSubTotal();
+                        $printer->calculateGrandTotal();
+
+                        // Set transaction ID
+                        $printer->setTransactionID($transaction_id);
+
+                        // Set logo
+// Uncomment the line below if $image_path is defined
+//$printer->setLogo($image_path);
+            
+                        // Set QR code
+                        $printer->setQRcode([
+                            'tid' => $transaction_id,
+                        ]);
+
+                        // Print receipt
+                        $printer->printReceipt();
+                        // $printer->printReceipt();
+                    })
+                    // ->action(function () {
+                    //     $printer = "\\\OXEYEZONE_PC\\\801P";
+                    //     $connector = new FilePrintConnector($printer);
+                    //     $printer = new Printer($connector);
+                    //     $printer->text("Hello World!\n");
+                    //     $printer->cut();
+                    //     $printer->close();
+                    // })
+                    ->visible(fn(Model $record): bool => $record->status != 'cancelled')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -26,6 +26,7 @@
         "livewire/livewire": "^3.4",
         "livewire/volt": "^1.0",
         "mokhosh/filament-kanban": "^2.7",
+        "rawilk/laravel-printing": "^3.0",
         "spatie/eloquent-sortable": "*",
         "z3d0x/filament-logger": "^0.7.0"
     },
