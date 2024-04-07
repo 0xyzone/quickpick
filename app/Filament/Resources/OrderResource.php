@@ -322,7 +322,7 @@ class OrderResource extends Resource
                         // $image_path = 'logo.png';
             
                         // Set items
-                        $items = ;
+                        $items = '';
 
                         // Init printer
                         $printer = new ReceiptPrinter;

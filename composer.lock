@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f2335127d73cdecf508a3dff0d2834ef",
+    "content-hash": "c31d78d9521397d168ece5c6ba856e86",
     "packages": [
         {
             "name": "althinect/filament-spatie-roles-permissions",
@@ -684,6 +684,69 @@
                 }
             ],
             "time": "2022-11-10T09:10:35+00:00"
+        },
+        {
+            "name": "charlieuki/receiptprinter",
+            "version": "1.2.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/charlieuki/receipt-printer.git",
+                "reference": "cf0e682289972ff89b3ce7504433c8bb0203386c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/charlieuki/receipt-printer/zipball/cf0e682289972ff89b3ce7504433c8bb0203386c",
+                "reference": "cf0e682289972ff89b3ce7504433c8bb0203386c",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": ">=7",
+                "mike42/escpos-php": "^2.1"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.1",
+                "orchestra/testbench": "~5.3",
+                "phpunit/phpunit": "~8.5",
+                "sempro/phpunit-pretty-print": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "charlieuki\\ReceiptPrinter\\ReceiptPrinterServiceProvider"
+                    ],
+                    "aliases": {
+                        "ReceiptPrinter": "charlieuki\\ReceiptPrinter\\Facades\\ReceiptPrinter"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "charlieuki\\ReceiptPrinter\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Charlie Anthony",
+                    "email": "charlie@usahakreatif.co.id",
+                    "homepage": "http://usahakreatif.co.id"
+                }
+            ],
+            "description": ":description",
+            "homepage": "https://github.com/charlieuki/receiptprinter",
+            "keywords": [
+                "ReceiptPrinter",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/charlieuki/receipt-printer/issues",
+                "source": "https://github.com/charlieuki/receipt-printer/tree/1.2.4"
+            },
+            "time": "2021-08-29T07:53:20+00:00"
         },
         {
             "name": "danharrin/date-format-converter",
@@ -4259,32 +4322,31 @@
         },
         {
             "name": "mike42/escpos-php",
-            "version": "v4.0",
+            "version": "v2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mike42/escpos-php.git",
-                "reference": "74fd89a3384135c90a8c6dc4b724e03df7c0e4f9"
+                "reference": "e5496cf819b048b11877117bd14a9cea4fb17c03"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mike42/escpos-php/zipball/74fd89a3384135c90a8c6dc4b724e03df7c0e4f9",
-                "reference": "74fd89a3384135c90a8c6dc4b724e03df7c0e4f9",
+                "url": "https://api.github.com/repos/mike42/escpos-php/zipball/e5496cf819b048b11877117bd14a9cea4fb17c03",
+                "reference": "e5496cf819b048b11877117bd14a9cea4fb17c03",
                 "shasum": ""
             },
             "require": {
-                "ext-intl": "*",
-                "ext-json": "*",
-                "ext-zlib": "*",
-                "mike42/gfx-php": "^0.6",
-                "php": ">=7.3.0"
+                "ext-mbstring": "*",
+                "php": ">=5.4.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^9",
-                "squizlabs/php_codesniffer": "^3.3"
+                "guzzlehttp/guzzle": "^5.3",
+                "phpunit/phpunit": "^4.8",
+                "squizlabs/php_codesniffer": "^3.2"
             },
             "suggest": {
                 "ext-gd": "Used for image printing if present.",
-                "ext-imagick": "Will be used for image printing if present. Required for PDF printing or use of custom fonts."
+                "ext-imagick": "Will be used for image printing if present. Required for PDF printing or use of custom fonts.",
+                "guzzlehttp/guzzle": "Allows the use of the ApiConnector to send print jobs over HTTP."
             },
             "type": "library",
             "autoload": {
@@ -4305,63 +4367,17 @@
             "description": "PHP receipt printer library for use with ESC/POS-compatible thermal and impact printers",
             "homepage": "https://github.com/mike42/escpos-php",
             "keywords": [
-                "Epson",
-                "barcode",
+                "ESC-POS",
+                "driver",
                 "escpos",
-                "printer",
-                "receipt-printer"
+                "print",
+                "receipt"
             ],
             "support": {
                 "issues": "https://github.com/mike42/escpos-php/issues",
-                "source": "https://github.com/mike42/escpos-php/tree/v4.0"
+                "source": "https://github.com/mike42/escpos-php/tree/v2.2"
             },
-            "time": "2022-05-23T11:05:09+00:00"
-        },
-        {
-            "name": "mike42/gfx-php",
-            "version": "v0.6",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/mike42/gfx-php.git",
-                "reference": "ed9ded2a9298e4084a9c557ab74a89b71e43dbdb"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/mike42/gfx-php/zipball/ed9ded2a9298e4084a9c557ab74a89b71e43dbdb",
-                "reference": "ed9ded2a9298e4084a9c557ab74a89b71e43dbdb",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.0.0"
-            },
-            "require-dev": {
-                "phpbench/phpbench": "@dev",
-                "phpunit/phpunit": "^6.5",
-                "squizlabs/php_codesniffer": "^3.3.1"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Mike42\\": "src/Mike42"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL-2.1-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Michael Billington",
-                    "email": "michael.billington@gmail.com"
-                }
-            ],
-            "description": "The pure PHP graphics library",
-            "homepage": "https://github.com/mike42/gfx-php",
-            "support": {
-                "issues": "https://github.com/mike42/gfx-php/issues",
-                "source": "https://github.com/mike42/gfx-php/tree/v0.6"
-            },
-            "time": "2019-10-05T02:44:33+00:00"
+            "time": "2019-10-05T05:59:00+00:00"
         },
         {
             "name": "mokhosh/filament-kanban",
@@ -5962,95 +5978,6 @@
                 }
             ],
             "time": "2023-11-08T05:53:05+00:00"
-        },
-        {
-            "name": "rawilk/laravel-printing",
-            "version": "v3.0.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/rawilk/laravel-printing.git",
-                "reference": "600c3e57d2e59989642b12ceaaf2f3687679f515"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/rawilk/laravel-printing/zipball/600c3e57d2e59989642b12ceaaf2f3687679f515",
-                "reference": "600c3e57d2e59989642b12ceaaf2f3687679f515",
-                "shasum": ""
-            },
-            "require": {
-                "guzzlehttp/guzzle": "^7.5",
-                "illuminate/support": "^8.0|^9.0|^10.0|^11.0",
-                "mike42/escpos-php": "^4.0",
-                "php": "^8.0|^8.1|^8.2|^8.3",
-                "spatie/laravel-package-tools": "^1.2|^1.13"
-            },
-            "require-dev": {
-                "laravel/pint": "^1.5",
-                "mockery/mockery": ">=1.4",
-                "orchestra/testbench": "^6.0|^7.0|^8.0|^9.0",
-                "pestphp/pest": "^1.20|^2.34",
-                "pestphp/pest-plugin-laravel": "^1.0|^2.2",
-                "php-http/message-factory": "^1.1",
-                "php-http/socket-client": "^2.1",
-                "psr/http-client": "^1.0",
-                "psr/http-message": "1.*",
-                "smalot/cups-ipp": "^0.5.0",
-                "spatie/laravel-ray": "^1.0|^1.29"
-            },
-            "suggest": {
-                "smalot/cups-ipp": "Required when using the CUPS driver"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Rawilk\\Printing\\PrintingServiceProvider"
-                    ],
-                    "aliases": {
-                        "Printing": "Rawilk\\Printing\\Facades\\Printing"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Rawilk\\Printing\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Randall Wilk",
-                    "email": "randall@randallwilk.dev",
-                    "homepage": "https://randallwilk.dev",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Direct printing for Laravel apps",
-            "homepage": "https://github.com/rawilk/laravel-printing",
-            "keywords": [
-                "CUPS",
-                "Direct printing",
-                "PrintNode",
-                "Raw printing",
-                "Receipt printing",
-                "ipp",
-                "laravel-printing",
-                "rawilk"
-            ],
-            "support": {
-                "issues": "https://github.com/rawilk/laravel-printing/issues",
-                "source": "https://github.com/rawilk/laravel-printing/tree/v3.0.4"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/rawilk",
-                    "type": "github"
-                }
-            ],
-            "time": "2024-03-10T22:10:03+00:00"
         },
         {
             "name": "rexlabs/enum",
