@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+$api = app(\Rawilk\Printing\Api\PrintNode\PrintNode::class);
 
 return [
     /*
