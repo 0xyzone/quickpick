@@ -388,11 +388,12 @@ class OrderResource extends Resource
                             ->cut();
 
                             $printerId = 73218713;
+                            $text = 'hello world';
 
                         // Now send the string to your receipt printer
                         Printing::newPrintTask()
                         ->printer($printerId)
-                            ->content($receipt)
+                            ->content($text)
                             ->send();
                     })
             ])
