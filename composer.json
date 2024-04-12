@@ -14,7 +14,6 @@
         "aymanalhattami/filament-slim-scrollbar": "^2.0",
         "barryvdh/laravel-dompdf": "^2.1",
         "cerbero/laravel-enum": "^1.3",
-        "charlieuki/receiptprinter": "^1.2",
         "filament/filament": "3.2",
         "filament/spatie-laravel-media-library-plugin": "3.2",
         "flowframe/laravel-trend": "^0.1.5",
@@ -27,6 +26,7 @@
         "livewire/livewire": "^3.4",
         "livewire/volt": "^1.0",
         "mokhosh/filament-kanban": "^2.7",
+        "rawilk/laravel-printing": "^3.0",
         "spatie/eloquent-sortable": "*",
         "z3d0x/filament-logger": "^0.7.0"
     },

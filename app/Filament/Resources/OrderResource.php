@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\URL;
 use Filament\Forms\Components\Split;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
+use Rawilk\Printing\Facades\Printing;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Textarea;
@@ -27,11 +28,12 @@ use Filament\Tables\Columns\SelectColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\Placeholder;
 use Filament\Tables\Columns\TextInputColumn;
+use Rawilk\Printing\Receipts\ReceiptPrinter;
 use App\Filament\Resources\OrderResource\Pages;
-use App\ReceiptPrinter;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Mike42\Escpos\PrintConnectors\FilePrintConnector;
 use App\Filament\Resources\OrderResource\RelationManagers;
+
 // use charlieuki\ReceiptPrinter\ReceiptPrinter as ReceiptPrinter;
 
 class OrderResource extends Resource
@@ -307,70 +309,92 @@ class OrderResource extends Resource
                     //     return URL::route('invoice.print', ['order' => $record]);
                     // }, shouldOpenInNewTab: true)
                     ->button()
-                    ->action(function (Order $record) {
-                        $company = Company::find(1);
-                        // Set params
-                        $mid = '-';
-                        $store_name = $company ? $company->name : 'No company name set';
-                        $store_address = $company->address ? $company->address : '-';
-                        $store_phone = $company->contact ? $company->contact : '-';
-                        $store_email = 'startaparimomo@gmail.com';
-                        $store_website = 'qp.suminshrestha.com.np';
-                        $tax_percentage = 0;
-                        $transaction_id = 'Order #' . $record->id;
-                        $currency = 'Rs ';
-                        // $image_path = 'logo.png';
-            
-                        // Set items
-                        $items = $record->orderItems;
+                    //                     ->action(function (Order $record) {
+//                         $company = Company::find(1);
+//                         // Set params
+//                         $mid = '-';
+//                         $store_name = $company ? $company->name : 'No company name set';
+//                         $store_address = $company->address ? $company->address : '-';
+//                         $store_phone = $company->contact ? $company->contact : '-';
+//                         $store_email = 'startaparimomo@gmail.com';
+//                         $store_website = 'qp.suminshrestha.com.np';
+//                         $tax_percentage = 0;
+//                         $transaction_id = 'Order #' . $record->id;
+//                         $currency = 'Rs ';
+//                         // $image_path = 'logo.png';
 
-                        // Init printer
-                        $printer = new ReceiptPrinter;
-                        $printer->init(
-                            config('receiptprinter.connector_type'),
-                            config('receiptprinter.connector_descriptor')
-                        );
+                    //                         // Set items
+//                         $items = $record->orderItems;
 
-                        // Set store info
-                        $printer->setStore($mid, $store_name, $store_address, $store_phone, $store_email, $store_website);
+                    //                         // Init printer
+//                         $printer = new ReceiptPrinter;
+//                         $printer->init(
+//                             config('receiptprinter.connector_type'),
+//                             config('receiptprinter.connector_descriptor')
+//                         );
 
-                        // Set currency
-                        $printer->setCurrency($currency);
+                    //                         // Set store info
+//                         $printer->setStore($mid, $store_name, $store_address, $store_phone, $store_email, $store_website);
 
-                        // Add items
-                        foreach ($items as $item) {
-                            $printer->addItem(
-                                $item->item['name'],
-                                $item['quantity'],
-                                $item->item['price']
-                            );
-                        }
-                        // Set tax
-                        $printer->setTax($tax_percentage);
+                    //                         // Set currency
+//                         $printer->setCurrency($currency);
 
-                        // Calculate total
-                        $printer->subtotal($record->sub_total);
-                        $printer->discount($record->discount_amount);
-                        $printer->grandtotal($record->total);
-                        // $printer->calculateGrandTotal();
+                    //                         // Add items
+//                         foreach ($items as $item) {
+//                             $printer->addItem(
+//                                 $item->item['name'],
+//                                 $item['quantity'],
+//                                 $item->item['price']
+//                             );
+//                         }
+//                         // Set tax
+//                         $printer->setTax($tax_percentage);
 
-                        // Set transaction ID
-                        $printer->setTransactionID($transaction_id);
+                    //                         // Calculate total
+//                         $printer->subtotal($record->sub_total);
+//                         $printer->discount($record->discount_amount);
+//                         $printer->grandtotal($record->total);
+//                         // $printer->calculateGrandTotal();
 
-                        // Set logo
-// Uncomment the line below if $image_path is defined
-//$printer->setLogo($image_path);
-            
-                        // Set QR code
-                        $printer->setQRcode([
-                            'order_id' => $record->id,
-                        ]);
+                    //                         // Set transaction ID
+//                         $printer->setTransactionID($transaction_id);
 
-                        // Print receipt
-                        $printer->printReceipt();
-                        // $printer->printReceipt();
-                    })
+                    //                         // Set logo
+// // Uncomment the line below if $image_path is defined
+// //$printer->setLogo($image_path);
+
+                    //                         // Set QR code
+//                         $printer->setQRcode([
+//                             'order_id' => $record->id,
+//                         ]);
+
+                    //                         // Print receipt
+//                         $printer->printReceipt();
+//                         // $printer->printReceipt();
+//                     })
                     ->visible(fn(Model $record): bool => $record->status != 'cancelled')
+                    ->action(function (Order $record) {
+                        // First generate the receipt
+                        $receipt = (string) (new ReceiptPrinter)
+                            ->centerAlign()
+                            ->text('My heading')
+                            ->leftAlign()
+                            ->line()
+                            ->twoColumnText('Item 1', '2.00')
+                            ->twoColumnText('Item 2', '4.00')
+                            ->feed(2)
+                            ->centerAlign()
+                            ->barcode('1234')
+                            ->cut();
+
+                            $printerId = 73218713;
+
+                        // Now send the string to your receipt printer
+                        Printing::newPrintTask()
+                        ->printer($printerId)
+                            ->content($receipt)
+                            ->send();
+                    })
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

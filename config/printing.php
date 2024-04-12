@@ -50,7 +50,7 @@ return [
     | If you know the id of a default printer you want to use, enter it here.
     |
     */
-    'default_printer_id' => null,
+    'default_printer_id' => 73218713,
 
     /*
     |--------------------------------------------------------------------------
@@ -69,7 +69,7 @@ return [
          * The width of the print area in dots.
          * Adjust according to your needs.
          */
-        'print_width' => 550,
+        'print_width' => 800,
 
         /*
          * The height (in dots) barcodes should be printed normally.
