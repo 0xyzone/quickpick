@@ -10,6 +10,15 @@
             /* Reset margins for the entire page */
         }
 
+        @media print {
+            .pagebreak {
+                clear: both;
+                page-break-after: always;
+            }
+
+            /* page-break-after works, as well */
+        }
+
         body {
             margin: 0;
             padding: 0;
@@ -46,6 +55,8 @@
 
         .total-amount {
             font-weight: bold;
+            text-align: right;
+            padding-right: 10px;
         }
 
         .text-center {
@@ -102,9 +113,6 @@
             <p style="font-weight: bold;">{{ $company->address ?? '' }}</p>
             <p style="font-weight: bold;">{{ $company->contact ?? '' }}</p>
             <p style="padding: 4px 0;">Order Placed {{ Carbon\Carbon::parse($order->created_at)->format('jS M, Y | g:ma') }}</p>
-            {{-- <p>Ordered By: {{ $order->user->name }}</p> --}}
-            {{-- <p>Address: {{ $order['address'] }}</p> --}}
-            <!-- Add more order details here -->
             <table>
                 <thead>
                     <tr>
@@ -169,30 +177,5 @@
             <p style="padding: 0 6px;">Scan the above qr to leave a review for us.</p>
         </div>
     </div>
-    <script>
-        // Adjust the height of the invoice dynamically based on content
-        window.onload = function() {
-            adjustInvoiceHeight();
-            window.addEventListener('resize', adjustInvoiceHeight); // Adjust height on window resize
-        };
-
-        function adjustInvoiceHeight() {
-            var invoice = document.querySelector('.invoice');
-            var content = document.querySelector('.invoice-content');
-            // Calculate the available height(viewport height minus padding)
-            var availableHeight = window.innerHeight - (parseInt(window.getComputedStyle(invoice).paddingTop) * 2);
-            // Set the content height to the available height
-            content.style.maxHeight = availableHeight + 'px';
-        }
-
-        function adjustPageHeight() {
-            var invoiceContent = document.querySelector('.invoice-content');
-            var invoice = document.querySelector('.invoice');
-            var contentHeight = invoiceContent.offsetHeight;
-            // Set the page height to the content height plus padding
-            invoice.style.height = contentHeight + 'px';
-        }
-
-    </script>
 </body>
 </html>
