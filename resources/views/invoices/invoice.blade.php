@@ -129,24 +129,24 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="total">Sub Total</td>
-                        <td class="total-amount" colspan="2">Rs. {{ rtrim(rtrim(number_format($order->sub_total, 2), '0'), '.') }}</td>
+                        <td class="total" colspan="2">Sub Total</td>
+                        <td class="total-amount">Rs. {{ rtrim(rtrim(number_format($order->sub_total, 2), '0'), '.') }}</td>
                     </tr>
                     @if ($order->discount_amount != 0)
                     <tr>
-                        <td class="total">Discount</td>
-                        <td class="total-amount" colspan="2">Rs. {{ rtrim(rtrim(number_format($order->discount_amount, 2), '0'), '.') }}</td>
+                        <td class="total" colspan="2">Discount</td>
+                        <td class="total-amount">Rs. {{ rtrim(rtrim(number_format($order->discount_amount, 2), '0'), '.') }}</td>
                     </tr>
                     @endif
                     @if ($order->delivery_charge != 0)
                     <tr>
-                        <td class="total">Delivery Charge</td>
-                        <td class="total-amount" colspan="2">Rs. {{ rtrim(rtrim(number_format($order->delivery_charge, 2), '0'), '.') }}</td>
+                        <td class="total" colspan="2">Delivery Charge</td>
+                        <td class="total-amount">Rs. {{ rtrim(rtrim(number_format($order->delivery_charge, 2), '0'), '.') }}</td>
                     </tr>
                     @endif
                     <tr>
-                        <td class="total">Grand Total</td>
-                        <td class="total-amount" colspan="2">Rs. {{ rtrim(rtrim(number_format($order->total, 2), '0'), '.') }}</tt>
+                        <td class="total" colspan="2">Grand Total</td>
+                        <td class="total-amount">Rs. {{ rtrim(rtrim(number_format($order->total, 2), '0'), '.') }}</tt>
                     </tr>
                     <tr>
                         <td style="text-align:center;" colspan='3'>
