@@ -22,11 +22,12 @@
             width: 100%;
             padding: 0;
             margin: 0 auto;
+            table-layout: fixed;
         }
 
         th {
             text-align: left;
-            padding-top: 20px;
+            padding-top: 8px;
         }
 
         tbody {
@@ -53,7 +54,7 @@
 
         h1 {
             margin: 0;
-            padding: 0 0 10px 0;
+            padding: 2px 0;
         }
 
         h2 {
@@ -76,6 +77,9 @@
         .orderNumber {
             text-align: center;
             margin-bottom: 2px;
+            font-size: 1.25rem;
+            color: #fff;
+            background: #000;
         }
 
         .invoice-content {
@@ -87,19 +91,24 @@
     </style>
 </head>
 <body>
+    @php
+    use App\Models\Company;
+    $company = Company::find(1);
+    @endphp
     <div class="invoice">
         <div class="invoice-content">
             <h1 class="orderNumber">Order #{{ $order->id }}</h1>
-            <h2>Star Tapari Momo</h2>
-            <p style="font-weight: bold;">Chagal, Dallu Awas, Kathmandu, Nepal</p>
-            <p>Order Placed {{ Carbon\Carbon::parse($order->created_at)->format('jS M, Y | g:ma') }}</p>
+            <h1 class="text-center">{{ $company->name ?? '' }}</h1>
+            <p style="font-weight: bold;">{{ $company->address ?? '' }}</p>
+            <p style="font-weight: bold;">{{ $company->contact ?? '' }}</p>
+            <p style="padding: 4px 0;">Order Placed {{ Carbon\Carbon::parse($order->created_at)->format('jS M, Y | g:ma') }}</p>
             {{-- <p>Ordered By: {{ $order->user->name }}</p> --}}
             {{-- <p>Address: {{ $order['address'] }}</p> --}}
             <!-- Add more order details here -->
             <table>
                 <thead>
                     <tr>
-                        <th>Item</th>
+                        <th style="width: 65%;">Item</th>
                         <th class="text-center">Qty</th>
                         <th>Price</th>
                     </tr>
@@ -129,24 +138,24 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="total" colspan="2">Sub Total</td>
-                        <td class="total-amount">Rs. {{ rtrim(rtrim(number_format($order->sub_total, 2), '0'), '.') }}</td>
+                        <td class="total">Sub Total</td>
+                        <td class="total-amount" colspan="2">Rs. {{ rtrim(rtrim(number_format($order->sub_total, 2), '0'), '.') }}</td>
                     </tr>
                     @if ($order->discount_amount != 0)
                     <tr>
-                        <td class="total" colspan="2">Discount</td>
-                        <td class="total-amount">Rs. {{ rtrim(rtrim(number_format($order->discount_amount, 2), '0'), '.') }}</td>
+                        <td class="total">Discount</td>
+                        <td class="total-amount" colspan="2">Rs. {{ rtrim(rtrim(number_format($order->discount_amount, 2), '0'), '.') }}</td>
                     </tr>
                     @endif
                     @if ($order->delivery_charge != 0)
                     <tr>
-                        <td class="total" colspan="2">Delivery Charge</td>
-                        <td class="total-amount">Rs. {{ rtrim(rtrim(number_format($order->delivery_charge, 2), '0'), '.') }}</td>
+                        <td class="total">Delivery Charge</td>
+                        <td class="total-amount" colspan="2">Rs. {{ rtrim(rtrim(number_format($order->delivery_charge, 2), '0'), '.') }}</td>
                     </tr>
                     @endif
                     <tr>
-                        <td class="total" colspan="2">Grand Total</td>
-                        <td class="total-amount">Rs. {{ rtrim(rtrim(number_format($order->total, 2), '0'), '.') }}</tt>
+                        <td class="total">Grand Total</td>
+                        <td class="total-amount" colspan="2">Rs. {{ rtrim(rtrim(number_format($order->total, 2), '0'), '.') }}</tt>
                     </tr>
                     <tr>
                         <td style="text-align:center;" colspan='3'>
