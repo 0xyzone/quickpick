@@ -13,10 +13,9 @@
         @media print {
             .pagebreak {
                 clear: both;
+                page-break-before: always;
                 page-break-after: always;
             }
-
-            /* page-break-after works, as well */
         }
 
         body {
@@ -172,10 +171,36 @@
                     </tr>
                 </tfoot>
             </table>
+            <div class="pagebreak"></div>
             <p style="padding: 0 6px;">Thank you for dining with us! Your presence brightened our day. We hope to see you again soon for more delicious moments.</p>
             <img src="review.png" alt="" style="display: block; margin-left: 50%; transform: translate(-50%, 0); width: 50%; margin-top: 5px; margin-bottom: 5px; ">
             <p style="padding: 0 6px;">Scan the above qr to leave a review for us.</p>
         </div>
     </div>
+    <script>
+        // Adjust the height of the invoice dynamically based on content
+        window.onload = function() {
+            adjustInvoiceHeight();
+            window.addEventListener('resize', adjustInvoiceHeight); // Adjust height on window resize
+        };
+
+        function adjustInvoiceHeight() {
+            var invoice = document.querySelector('.invoice');
+            var content = document.querySelector('.invoice-content');
+            // Calculate the available height(viewport height minus padding)
+            var availableHeight = window.innerHeight - (parseInt(window.getComputedStyle(invoice).paddingTop) * 2);
+            // Set the content height to the available height
+            content.style.maxHeight = availableHeight + 'px';
+        }
+
+        function adjustPageHeight() {
+            var invoiceContent = document.querySelector('.invoice-content');
+            var invoice = document.querySelector('.invoice');
+            var contentHeight = invoiceContent.offsetHeight;
+            // Set the page height to the content height plus padding
+            invoice.style.height = contentHeight + 'px';
+        }
+
+    </script>
 </body>
 </html>
