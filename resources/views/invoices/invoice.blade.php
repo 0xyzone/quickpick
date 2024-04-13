@@ -4,7 +4,7 @@
     <title>Invoice - {{ $order->id }}</title>
     <style>
         @page {
-            size:  80mm 297mm;
+            size: 72mm 297mm;
             /* Set paper size to 80mm width */
             margin: 0;
             /* Reset margins for the entire page */
@@ -20,11 +20,21 @@
 
         table {
             width: 100%;
-            padding: 0 20px 0 0;
+            padding: 0;
+            margin: 0 auto;
         }
 
         th {
             text-align: left;
+            padding-top: 20px;
+        }
+
+        tbody {
+            font-size: 11px;
+        }
+
+        tbody td {
+            padding: 2px 0;
         }
 
         .total {
@@ -41,14 +51,35 @@
             text-align: center;
         }
 
-        h1{
+        h1 {
+            margin: 0;
+            padding: 0 0 10px 0;
+        }
+
+        h2 {
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        h4 {
             margin: 0;
             padding: 0;
         }
 
-        p{
+        p {
             margin: 0;
             padding: 0;
+            text-align: center;
+        }
+
+        .orderNumber {
+            text-align: center;
+            margin-bottom: 2px;
+        }
+
+        .invoice-content {
+            padding: 0 16px;
         }
 
         /* Add additional styles as needed */
@@ -58,8 +89,10 @@
 <body>
     <div class="invoice">
         <div class="invoice-content">
-            <h1>Order #{{ $order->id }}</h1>
-            <p>Order Placed {{ Carbon\Carbon::parse($order->created_at)->format('jS M, Y') }}</p>
+            <h1 class="orderNumber">Order #{{ $order->id }}</h1>
+            <h2>Star Tapari Momo</h2>
+            <p style="font-weight: bold;">Chagal, Dallu Awas, Kathmandu, Nepal</p>
+            <p>Order Placed {{ Carbon\Carbon::parse($order->created_at)->format('jS M, Y | g:ma') }}</p>
             {{-- <p>Ordered By: {{ $order->user->name }}</p> --}}
             {{-- <p>Address: {{ $order['address'] }}</p> --}}
             <!-- Add more order details here -->
@@ -91,13 +124,40 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td class="total" colspan="2">Total</td>
-                        <td class="total-amount">{{ rtrim(rtrim(number_format($order->total, 2), '0'), '.') }}</tt>
+                        <td style="text-align:center;" colspan='3'>
+                            <hr style="border: 2px dotted #000000; border-style: none none dotted; color: #fff; background-color: #fff;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="total">Sub Total</td>
+                        <td class="total-amount" colspan="2">Rs. {{ rtrim(rtrim(number_format($order->sub_total, 2), '0'), '.') }}</td>
+                    </tr>
+                    @if ($order->discount_amount != 0)
+                    <tr>
+                        <td class="total">Discount</td>
+                        <td class="total-amount" colspan="2">Rs. {{ rtrim(rtrim(number_format($order->discount_amount, 2), '0'), '.') }}</td>
+                    </tr>
+                    @endif
+                    @if ($order->delivery_charge != 0)
+                    <tr>
+                        <td class="total">Delivery Charge</td>
+                        <td class="total-amount" colspan="2">Rs. {{ rtrim(rtrim(number_format($order->delivery_charge, 2), '0'), '.') }}</td>
+                    </tr>
+                    @endif
+                    <tr>
+                        <td class="total">Grand Total</td>
+                        <td class="total-amount" colspan="2">Rs. {{ rtrim(rtrim(number_format($order->total, 2), '0'), '.') }}</tt>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center;" colspan='3'>
+                            <hr style="border: 2px dotted #000000; border-style: none none dotted; color: #fff; background-color: #fff;">
+                        </td>
                     </tr>
                 </tfoot>
             </table>
-            {{-- <p>Total: {{ $order['total'] }}</p>
-            <p>Ordered At: {{ $order['created_at']->format('jS M, Y') }}</p> --}}
+            <p style="padding: 0 6px;">Thank you for dining with us! Your presence brightened our day. We hope to see you again soon for more delicious moments.</p>
+            <img src="review.png" alt="" style="display: block; margin-left: 50%; transform: translate(-50%, 0); width: 50%; margin-top: 5px; margin-bottom: 5px; ">
+            <p style="padding: 0 6px;">Scan the above qr to leave a review for us.</p>
         </div>
     </div>
     <script>
