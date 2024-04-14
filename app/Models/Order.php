@@ -34,4 +34,14 @@ class Order extends Model implements Sortable
     {
         return $this->hasMany(OrderItem::class);
     }
+
+    /**
+     * Get all of the payments for the Order
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
 }
