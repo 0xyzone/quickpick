@@ -190,7 +190,7 @@ class OrderResource extends Resource
                                 ->content(function (): string {
                                     return 'Delivery Charge';
                                 }),
-                            Placeholder::make('delivery_charge')
+                            Placeholder::make('charge_amount')
                                 ->label('')
                                 ->content(function (Get $get): string {
                                     return 'रु ' . $get('delivery_charge');
@@ -225,8 +225,8 @@ class OrderResource extends Resource
             return $subtotal + ($prices[$product['item_id']] * $product['quantity']);
         }, 0);
         $discountType = $get('type');
-        $discount = 0;
-        $deliveryCharge = 0;
+        // $discount = 0;
+        // $deliveryCharge = 0;
         if ($discountType == 'percent') {
             $percent = $get('percent');
             $discount = $subtotal * ($percent / 100);
@@ -236,6 +236,7 @@ class OrderResource extends Resource
         }
         $deliveryCharge = $get('delivery_charge');
         $set('sub_total', $subtotal);
+        $set('delivery_charge', $deliveryCharge);
         $set('discount_amount', $discount);
         $set('total', $subtotal - $discount + $deliveryCharge);
     }
