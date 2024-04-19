@@ -264,7 +264,9 @@ class OrderResource extends Resource
                                         return 'रु ' . number_format($get('received_payments'));
                                     }
                                 }),
-                        ])->hidden(fn(Get $get): bool => $get('payments') ? false : true),
+                        ])
+                            ->hidden(fn(Get $get): bool => $get('payments') ? false : true)
+                        ,
                         Split::make([
                             Placeholder::make('due')
                                 ->label('')
@@ -279,12 +281,18 @@ class OrderResource extends Resource
                                             $paymentAmount[] = $payment->payment_amount;
                                         }
                                         $amount = $record->total - array_sum($paymentAmount);
-                                        return 'रु ' . ($get('due') ? number_format($get('due')) : number_format($amount));
+                                        if ($get('due')) {
+
+                                            return 'रु ' . ($get('due') ? number_format($get('due')) : number_format($amount));
+
+                                        }
+                                        return 0;
+
                                     } else {
                                         return 'रु ' . number_format($get('due'));
                                     }
                                 }),
-                        ])->hidden(fn(Get $get, $record): bool => $get('received_payments') < $get('total') ? false : true),
+                        ])->hidden(fn(Get $get, $record): bool => ($get('due') || $record->payments->count() > 0) ? false : true),
                         Hidden::make('sub_total'),
                         Hidden::make('discount_amount'),
                         Hidden::make('total'),
@@ -314,14 +322,17 @@ class OrderResource extends Resource
 
         // Payments
         $receivedPayments = 0;
+        $due = 0;
         $payments = collect($get('payments'));
         // dd($payments);
         $receivedPayments = $payments->sum('payment_amount');
+        $due = $get('total') - $receivedPayments;
 
         // Setting Values
         $set('sub_total', $subtotal);
         $set('delivery_charge', $deliveryCharge);
         $set('discount_amount', $discount);
+        $set('due', $due);
         $set('total', $subtotal - $discount + $deliveryCharge);
         $set('received_payments', $receivedPayments);
     }
