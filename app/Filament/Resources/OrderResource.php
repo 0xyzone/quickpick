@@ -268,10 +268,40 @@ class OrderResource extends Resource
                             ->hidden(fn(Get $get): bool => $get('payments') ? false : true)
                         ,
                         Split::make([
-                            Placeholder::make('due')
+                            Placeholder::make('dueLabel')
                                 ->label('')
-                                ->content(function (): string {
-                                    return 'Due';
+                                ->content(function (Get $get, Order $record): string {
+                                    if ($record->payments->count() > 0) {
+                                        foreach ($record->payments as $payment) {
+                                            $paymentAmount[] = $payment->payment_amount;
+                                        }
+                                        $amount = $record->total - array_sum($paymentAmount);
+                                        if ($get('due')) {
+                                            if ($get('due') <= 0) {
+                                                return 'Return Amount';
+                                            }
+
+                                            return 'Due';
+
+                                        }
+                                        if ($amount <= 0) {
+                                            return 'Return Amount';
+                                        } else {
+                                            return 'Due';
+                                        }
+
+                                    } else {
+                                        if ($get('due')) {
+                                            if ($get('due') <= 0) {
+                                                return 'Return Amount';
+                                            }
+
+                                            return 'Due';
+
+                                        }else {
+                                            return '';
+                                        };
+                                    }
                                 }),
                             Placeholder::make('due')
                                 ->label('')
@@ -282,14 +312,30 @@ class OrderResource extends Resource
                                         }
                                         $amount = $record->total - array_sum($paymentAmount);
                                         if ($get('due')) {
+                                            if ($get('due') <= 0) {
+                                                return 'रु ' . number_format($get('due') - (2 * $get('due')));
+                                            }
 
-                                            return 'रु ' . ($get('due') ? number_format($get('due')) : number_format($amount));
+                                            return 'रु ' . number_format($get('due'));
 
                                         }
-                                        return 0;
+                                        if ($amount <= 0) {
+                                            return 'रु ' . $amount - (2 * $amount);
+                                        } else {
+                                            return 'रु ' . $amount;
+                                        }
 
                                     } else {
-                                        return 'रु ' . number_format($get('due'));
+                                        if ($get('due')) {
+                                            if ($get('due') <= 0) {
+                                                return 'रु ' . number_format($get('due') - (2 * $get('due')));
+                                            }
+
+                                            return 'रु ' . number_format($get('due'));
+
+                                        }else {
+                                            return '';
+                                        };
                                     }
                                 }),
                         ])->hidden(fn(Get $get, $record): bool => ($get('due') || $record->payments->count() > 0) ? false : true),
