@@ -103,7 +103,7 @@ class OrderResource extends Resource
                             ->prefix('रु ')
                             ->numeric()
                             ->columnSpan(2)
-                            ->formatStateUsing(fn(string $state): string => number_format($state)),
+                            ->formatStateUsing(fn($state): ?string => number_format($state)),
                         Hidden::make('price')
                     ])
                     ->columns(10)
@@ -135,7 +135,7 @@ class OrderResource extends Resource
                             ->numeric()
                             ->hidden(fn(Get $get): bool => $get('type') == 'amount' ? false : true)
                             ->prefix('रु ')
-                            ->formatStateUsing(fn(string $state): string => number_format($state)),
+                            ->formatStateUsing(fn($state): ?string => number_format($state)),
                     ])
                     ->live()
                     ->afterStateUpdated(function (Get $get, Set $set) {
@@ -153,7 +153,7 @@ class OrderResource extends Resource
                                 100 => '100',
                                 150 => '150',
                             ])
-                            ->formatStateUsing(fn(string $state): string => number_format($state)),
+                            ->formatStateUsing(fn($state): ?string => number_format($state)),
                     ])
                     ->live()
                     ->afterStateUpdated(function (Get $get, Set $set) {
@@ -253,8 +253,8 @@ class OrderResource extends Resource
                                 }),
                             Placeholder::make('received_payments')
                                 ->label('')
-                                ->content(function (Get $get, Order $record): string {
-                                    if ($record->payments->count() > 0) {
+                                ->content(function (Get $get, $record): string {
+                                    if ($record && $record->payments) {
                                         foreach ($record->payments as $payment) {
                                             $paymentAmount[] = $payment->payment_amount;
                                         }
@@ -265,7 +265,7 @@ class OrderResource extends Resource
                                     }
                                 }),
                         ])
-                            ->hidden(fn(Get $get): bool => $get('payments') ? false : true)
+                            ->hidden(fn(Get $get, $record): bool => ($get('payments') || ($record && $record->payments->count() > 0)) ? false : true)
                         ,
                         Split::make([
                             Placeholder::make('dueLabel')
@@ -338,7 +338,7 @@ class OrderResource extends Resource
                                         };
                                     }
                                 }),
-                        ])->hidden(fn(Get $get, $record): bool => ($get('due') || $record->payments->count() > 0) ? false : true),
+                        ])->hidden(fn(Get $get, $record): bool => ($get('due') || ($record && $record->payments->count() > 0)) ? false : true),
                         Hidden::make('sub_total'),
                         Hidden::make('discount_amount'),
                         Hidden::make('total'),

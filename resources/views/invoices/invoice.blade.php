@@ -169,6 +169,24 @@
                             <hr style="border: 2px dotted #000000; border-style: none none dotted; color: #fff; background-color: #fff;">
                         </td>
                     </tr>
+                    @if ($order->payments->count() > 0) 
+                        <tr>
+                            <td style="text-align:center; font-weight: bold;" colspan='3'>
+                                Payments
+                            </td>
+                        </tr>
+                        @foreach ($order->payments as $payment)
+                        <tr>
+                            <td class="total">Payed Through: {{ ucfirst($payment->payment_method) }}</td>
+                            <td class="total-amount" colspan="2">Rs. {{ rtrim(rtrim(number_format($order->total, 2), '0'), '.') }}</tt>
+                        </tr>
+                        @endforeach
+                        <tr>
+                            <td style="text-align:center;" colspan='3'>
+                                <hr style="border: 2px dotted #000000; border-style: none none dotted; color: #fff; background-color: #fff;">
+                            </td>
+                        </tr>
+                    @endif
                 </tfoot>
             </table>
             <div class="pagebreak"></div>
