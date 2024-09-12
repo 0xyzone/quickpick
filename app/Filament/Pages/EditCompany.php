@@ -56,9 +56,16 @@ class EditCompany extends Page implements HasForms
                 TextInput::make('vat_number')
                     ->label('VAT Number')
                     ->placeholder('Eg. 123456789'),
-                    FileUpload::make('company_logo_path')
-                    ->image()
-                    ->columnSpanFull()
+                FileUpload::make('company_logo_path')
+                    ->directory('company_logo')
+                    ->image(),
+                FileUpload::make('qr_code')
+                    ->directory('qr_code')
+                    ->image(),
+                TextInput::make('invoice_footer')
+                    ->placeholder('Edit your invoice footer!'),
+                TextInput::make('qr_description')
+                    ->placeholder('Edit your description for qr!'),
 
             ])
             ->columns(2)

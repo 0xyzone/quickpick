@@ -169,30 +169,47 @@
                             <hr style="border: 2px dotted #000000; border-style: none none dotted; color: #fff; background-color: #fff;">
                         </td>
                     </tr>
-                    @if ($order->payments->count() > 0) 
-                        <tr>
-                            <td style="text-align:center; font-weight: bold;" colspan='3'>
-                                Payments
-                            </td>
-                        </tr>
-                        @foreach ($order->payments as $payment)
-                        <tr>
-                            <td class="total">Payed Through: {{ ucfirst($payment->payment_method) }}</td>
-                            <td class="total-amount" colspan="2">Rs. {{ rtrim(rtrim(number_format($order->total, 2), '0'), '.') }}</tt>
-                        </tr>
-                        @endforeach
-                        <tr>
-                            <td style="text-align:center;" colspan='3'>
-                                <hr style="border: 2px dotted #000000; border-style: none none dotted; color: #fff; background-color: #fff;">
-                            </td>
-                        </tr>
+                    @if ($order->payments->count() > 0)
+                    <tr>
+                        <td style="text-align:center; font-weight: bold;" colspan='3'>
+                            Payments
+                        </td>
+                    </tr>
+                    @foreach ($order->payments as $payment)
+                    <tr>
+                        <td class="total">Payed Through: {{ ucfirst($payment->payment_method) }}</td>
+                        <td class="total-amount" colspan="2">Rs. {{ rtrim(rtrim(number_format($order->total, 2), '0'), '.') }}</tt>
+                    </tr>
+                    @endforeach
+                    <tr>
+                        <td style="text-align:center;" colspan='3'>
+                            <hr style="border: 2px dotted #000000; border-style: none none dotted; color: #fff; background-color: #fff;">
+                        </td>
+                    </tr>
                     @endif
                 </tfoot>
             </table>
             <div class="pagebreak"></div>
-            <p style="padding: 0 6px;">Thank you for dining with us! Your presence brightened our day. We hope to see you again soon for more delicious moments.</p>
-            <img src="review.png" alt="" style="display: block; margin-left: 50%; transform: translate(-50%, 0); width: 50%; margin-top: 5px; margin-bottom: 5px; ">
-            <p style="padding: 0 6px;">Scan the above qr to leave a review for us.</p>
+            <p style="padding: 0 6px;">
+                @if (!isset($company))
+                Thank you for dining with us! Your presence brightened our day. We hope to see you again soon for more delicious moments.
+                @else
+                {{ $company->invoice_footer ?? "" }}
+                @endif
+            </p>
+            @if (!isset($company)) 
+                <img src="review.png" alt="" style="display: block; margin-left: 50%; transform: translate(-50%, 0); width: 50%; margin-top: 5px; margin-bottom: 5px; ">
+            @else 
+            <img src="{{ $company->qr_code ?? "review.png" }}" alt="" style="display: block; margin-left: 50%; transform: translate(-50%, 0); width: 50%; margin-top: 5px; margin-bottom: 5px; ">
+            
+            @endif
+            <p style="padding: 0 6px;">
+                @if (!isset($company))
+                Scan the above qr to leave a review for us.
+                @else
+                {{ $company->qr_description ?? "Scan the above qr to leave a review for us." }}
+                @endif
+            </p>
         </div>
     </div>
     <script>

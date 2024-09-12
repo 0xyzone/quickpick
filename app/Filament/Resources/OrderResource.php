@@ -192,7 +192,8 @@ class OrderResource extends Resource
                             }),
                     ])
                     ->columns(2)
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->defaultItems(0),
                 Fieldset::make('Total')
                     ->schema([
                         Split::make([
@@ -298,7 +299,7 @@ class OrderResource extends Resource
 
                                             return 'Due';
 
-                                        }else {
+                                        } else {
                                             return '';
                                         };
                                     }
@@ -333,7 +334,7 @@ class OrderResource extends Resource
 
                                             return 'रु ' . number_format($get('due'));
 
-                                        }else {
+                                        } else {
                                             return '';
                                         };
                                     }
