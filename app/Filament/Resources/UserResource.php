@@ -33,8 +33,13 @@ class UserResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(191),
+                Forms\Components\TextInput::make('password')
+                ->hiddenOn('edit')
+                    ->password()
+                    ->required(),
                 Forms\Components\TextInput::make('username')
                     ->required()
+                    ->unique()
                     ->disabledOn('edit')
                     ->maxLength(191),
                 Select::make('roles')
@@ -44,6 +49,7 @@ class UserResource extends Resource
                     ->preload(),
                 Forms\Components\TextInput::make('email')
                     ->required()
+                    ->unique()
                     ->disabledOn('edit')
                     ->email()
                     ->required()
