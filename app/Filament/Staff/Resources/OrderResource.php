@@ -220,7 +220,7 @@ class OrderResource extends Resource
 
     public static function updateTotals(Get $get, Set $set): void
     {
-        $selectedProducts = collect($get('orderItems'))->filter(fn($item) => !empty ($item['item_id']) && !empty ($item['quantity']));
+        $selectedProducts = collect($get('orderItems'))->filter(fn($item) => !empty($item['item_id']) && !empty($item['quantity']));
         $prices = Item::find($selectedProducts->pluck('item_id'))->pluck('price', 'id');
         $subtotal = $selectedProducts->reduce(function ($subtotal, $product) use ($prices) {
             return $subtotal + ($prices[$product['item_id']] * $product['quantity']);
@@ -261,6 +261,11 @@ class OrderResource extends Resource
                     ->searchable(),
                 TextColumn::make('user.name')
                     ->label('Ordered By'),
+                TextColumn::make('orderItems')
+                    ->formatStateUsing(fn($state, Get $get): string => $state->item->name . ' (x' . ($state->quantity == floor($state->quantity) ? number_format($state->quantity) : number_format($state->quantity, 1)) . ')')
+                    ->listWithLineBreaks()
+                    ->limitList(4)
+                    ->badge(),
                 TextColumn::make('address')
                     ->default('-')
                     ->limit(25),
