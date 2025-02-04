@@ -258,6 +258,7 @@ class OrderResource extends Resource
                                 ->label('')
                                 ->content(function (Get $get, $record): string {
                                     if ($record && $record->payments) {
+                                        $paymentAmount = [];
                                         foreach ($record->payments as $payment) {
                                             $paymentAmount[] = $payment->payment_amount;
                                         }
