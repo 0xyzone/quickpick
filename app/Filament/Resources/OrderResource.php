@@ -459,8 +459,7 @@ class OrderResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ])
-            ->poll('10s');
+            ]);
     }
 
     public function printInvoice(Order $order)
