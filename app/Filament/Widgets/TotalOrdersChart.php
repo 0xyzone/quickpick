@@ -19,7 +19,7 @@ class TotalOrdersChart extends ApexChartWidget
      *
      * @var string
      */
-    protected static string $chartId = 'totalOrdersChart';
+    protected static ?string $chartId = 'totalOrdersChart';
 
     /**
      * Widget Title

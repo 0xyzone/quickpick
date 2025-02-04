@@ -19,7 +19,7 @@ class TotalOrdersPerMonthChart extends ApexChartWidget
      *
      * @var string
      */
-    protected static string $chartId = 'totalOrdersChartMonth';
+    protected static ?string $chartId = 'totalOrdersChartMonth';
 
     /**
      * Widget Title
