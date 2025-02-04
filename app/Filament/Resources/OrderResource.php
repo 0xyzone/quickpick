@@ -194,6 +194,7 @@ class OrderResource extends Resource
                     ])
                     ->columns(2)
                     ->columnSpanFull()
+                    ->hiddenOn('create')
                     ->defaultItems(0),
                 Fieldset::make('Total')
                     ->schema([
