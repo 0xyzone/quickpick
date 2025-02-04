@@ -67,6 +67,7 @@ class OrderResource extends Resource
                             ->relationship('item', 'name')
                             ->searchable()
                             // ->options(Item::all()->pluck('name', 'id'))
+                            ->preload()
                             ->required()
                             ->reactive()
                             ->selectablePlaceholder(false)
