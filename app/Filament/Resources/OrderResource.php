@@ -269,6 +269,7 @@ class OrderResource extends Resource
                                 }),
                         ])
                             ->hidden(fn(Get $get, $record): bool => ($get('payments') || ($record && $record->payments->count() > 0)) ? false : true)
+                            ->hiddenOn('create')
                         ,
                         Split::make([
                             Placeholder::make('dueLabel')
@@ -341,7 +342,8 @@ class OrderResource extends Resource
                                         };
                                     }
                                 }),
-                        ])->hidden(fn(Get $get, $record): bool => ($get('due') || ($record && $record->payments->count() > 0)) ? false : true),
+                        ])->hidden(fn(Get $get, $record): bool => ($get('due') || ($record && $record->payments->count() > 0)) ? false : true)
+                        ->hiddenOn('create'),
                         Hidden::make('sub_total'),
                         Hidden::make('discount_amount'),
                         Hidden::make('total'),
