@@ -55,7 +55,7 @@ class OrderResource extends Resource
                         'off_site' => 'Online/Call'
                     ])
                     ->default('on_site')
-                    ->reactive(),
+                    ->live(onBlur: true),
                 TextInput::make('address')
                     ->required(fn(Get $get) => $get('order_type') == 'off_site')
                     ->hidden(fn(Get $get): bool => $get('order_type') == 'off_site' ? false : true),
@@ -69,7 +69,7 @@ class OrderResource extends Resource
                             // ->options(Item::all()->pluck('name', 'id'))
                             ->preload()
                             ->required()
-                            ->reactive()
+                            ->live(onBlur: true)
                             ->selectablePlaceholder(false)
                             ->afterStateUpdated(function ($state, callable $set, Get $get) {
                                 $product = Item::find($state);
@@ -83,7 +83,7 @@ class OrderResource extends Resource
                             ->numeric()
                             ->minValue(0.5)
                             ->step(0.5)
-                            ->reactive()
+                            ->live(onBlur: true)
                             ->afterStateUpdated(function ($state, callable $set, Get $get) {
                                 $id = $get('item_id');
                                 $product = Item::find($id);
@@ -117,7 +117,7 @@ class OrderResource extends Resource
                                 'percent' => 'Percent (%)',
                                 'amount' => 'Amount'
                             ])
-                            ->reactive(),
+                            ->live(onBlur: true),
                         Select::make('percent')
                             ->selectablePlaceholder(false)
                             ->options([
