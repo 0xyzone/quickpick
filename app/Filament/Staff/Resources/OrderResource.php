@@ -64,8 +64,9 @@ class OrderResource extends Resource
                     ->schema([
                         Select::make('item_id')
                             ->label('Item')
+                            ->relationship('item', 'name')
                             ->searchable()
-                            ->options(Item::all()->pluck('name', 'id'))
+                            // ->options(Item::all()->pluck('name', 'id'))
                             ->required()
                             ->reactive()
                             ->selectablePlaceholder(false)
