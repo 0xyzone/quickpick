@@ -1,5 +1,5 @@
 <div {{ $attributes }}>
-    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" viewBox="0 0 2000 590">
+    {{-- <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" viewBox="0 0 2000 590">
         <g transform="matrix(1,0,0,1,-1.2121212121212466,0.14033996857318698)"><svg viewBox="0 0 396 117" data-background-color="#001f3f" preserveAspectRatio="xMidYMid meet" height="590" width="2000" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <g id="tight-bounds" transform="matrix(1,0,0,1,0.2400000000000091,-0.027830129361120726)"><svg viewBox="0 0 395.52 117.05566025872226" height="117.05566025872226" width="395.52">
                         <g><svg viewBox="0 0 590.3327215114199 174.7112320207516" height="117.05566025872226" width="395.52">
@@ -41,5 +41,6 @@
                     <rect width="395.52" height="117.05566025872226" fill="none" stroke="none" visibility="hidden"></rect>
                 </g>
             </svg></g>
-    </svg>
+    </svg> --}}
+    <img src="{{ asset('img/Final Rectangle white.png') }}" alt="">
 </div>
